@@ -7,6 +7,7 @@ import com.googlecode.protobuf.format.JsonFormat;
 import com.xqh.ad.dsp.platform.utils.WinNoticeUtils;
 import com.xqh.ad.dsp.platform.utils.zkconf.TestConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +43,10 @@ public class TestController {
         //         .setId(bidRequest.getId())
         //         .build();
         // return JsonFormat.printToString(bidResponse);
-        return testConfig.getBidResponse();
+        JSONObject jsonObject = JSONObject.parseObject(testConfig.getBidResponse());
+        jsonObject.put("id", bidRequest.getId());
+        jsonObject.put("bidid", System.currentTimeMillis() + RandomUtils.nextInt(10000, 99999));
+        return jsonObject.toJSONString();
     }
 
     @GetMapping("win/notice")
