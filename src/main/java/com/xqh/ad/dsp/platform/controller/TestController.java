@@ -45,7 +45,7 @@ public class TestController {
         // return JsonFormat.printToString(bidResponse);
         JSONObject jsonObject = JSONObject.parseObject(testConfig.getBidResponse());
         jsonObject.put("id", bidRequest.getId());
-        jsonObject.put("bidid", System.currentTimeMillis() + RandomUtils.nextInt(10000, 99999));
+        jsonObject.put("bidid", System.currentTimeMillis() + "" + RandomUtils.nextInt(10000, 99999));
         return jsonObject.toJSONString();
     }
 
