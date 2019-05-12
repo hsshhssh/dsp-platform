@@ -1,4 +1,4 @@
-package com.xqh.ad.dsp.platform.utils.scheduled;
+package com.xqh.ad.dsp.platform.scheduled;
 
 import com.xqh.ad.dsp.platform.service.RuanGaoBidService;
 import lombok.extern.slf4j.Slf4j;

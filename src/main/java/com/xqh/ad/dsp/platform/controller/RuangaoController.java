@@ -8,7 +8,6 @@ import com.xqh.ad.dsp.platform.service.RuanGaoBidService;
 import com.xqh.ad.dsp.platform.utils.AsyncUtils;
 import com.xqh.ad.dsp.platform.utils.WinNoticeUtils;
 import com.xqh.ad.dsp.platform.utils.enums.PMediaEnum;
-import com.xqh.ad.dsp.platform.utils.ruangao.RuanGaoConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
