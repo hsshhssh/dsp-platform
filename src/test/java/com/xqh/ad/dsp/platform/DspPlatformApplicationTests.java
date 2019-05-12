@@ -1,8 +1,11 @@
 package com.xqh.ad.dsp.platform;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.google.common.collect.Sets;
+import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformAdplacement;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformAdplacementService;
 import com.xqh.ad.dsp.platform.service.RuanGaoBidService;
+import com.xqh.ad.dsp.platform.utils.enums.PMediaEnum;
 import com.xqh.ad.dsp.platform.utils.ruangao.AdplacementModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -31,12 +33,22 @@ public class DspPlatformApplicationTests {
 
     @Test
     public void notInAdplcementIdTest() {
-        Set<String> strings = adplacementService.selectNotInAdplacement(Sets.newHashSet("1", "2"));
+        Set<String> strings = adplacementService.selectNotInAdplacement(Sets.newHashSet("1", "2"), PMediaEnum.RUAN_GAO);
         System.out.println(strings);
     }
 
     @Test
     public void contextLoads() {
+    }
+
+    @Test
+    public void updateTest() {
+        TPlatformAdplacement adplacement = new TPlatformAdplacement();
+        adplacement.setStatus(2);
+        UpdateWrapper<TPlatformAdplacement> wrapper = new UpdateWrapper<>();
+        wrapper.eq("pmediaid", 1);
+        wrapper.eq("adplacementid", "2");
+        adplacementService.update(adplacement, wrapper);
     }
 
 }

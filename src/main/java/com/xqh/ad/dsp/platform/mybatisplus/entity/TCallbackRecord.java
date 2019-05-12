@@ -1,20 +1,22 @@
 package com.xqh.ad.dsp.platform.mybatisplus.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
  * <p>
- * 竞价请求记录表
+ * 回调记录
  * </p>
  *
  * @author K神带你飞
- * @since 2019-05-02
+ * @since 2019-05-12
  */
-public class TBidRecord implements Serializable {
+public class TCallbackRecord implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,34 +33,22 @@ public class TBidRecord implements Serializable {
     private Integer pmediaid;
 
     /**
-     * 请求id
-     */
-    @TableField("requestid")
-    private String requestid;
-
-    /**
-     * 响应id
-     */
-    @TableField("bidid")
-    private String bidid;
-
-    /**
-     * 曝光id（逗号分割）
+     * 曝光id
      */
     @TableField("impid")
     private String impid;
 
     /**
-     * 请求参数
+     * bid impression id from dsp response
      */
-    @TableField("bidrequest")
-    private String bidrequest;
+    @TableField("bidimpid")
+    private String bidimpid;
 
     /**
-     * 响应参数
+     * 价格
      */
-    @TableField("bidresponse")
-    private String bidresponse;
+    @TableField("callback_price")
+    private BigDecimal callbackPrice;
 
     /**
      * 创建时间
@@ -89,22 +79,6 @@ public class TBidRecord implements Serializable {
         this.pmediaid = pmediaid;
     }
 
-    public String getRequestid() {
-        return requestid;
-    }
-
-    public void setRequestid(String requestid) {
-        this.requestid = requestid;
-    }
-
-    public String getBidid() {
-        return bidid;
-    }
-
-    public void setBidid(String bidid) {
-        this.bidid = bidid;
-    }
-
     public String getImpid() {
         return impid;
     }
@@ -113,20 +87,20 @@ public class TBidRecord implements Serializable {
         this.impid = impid;
     }
 
-    public String getBidrequest() {
-        return bidrequest;
+    public String getBidimpid() {
+        return bidimpid;
     }
 
-    public void setBidrequest(String bidrequest) {
-        this.bidrequest = bidrequest;
+    public void setBidimpid(String bidimpid) {
+        this.bidimpid = bidimpid;
     }
 
-    public String getBidresponse() {
-        return bidresponse;
+    public BigDecimal getCallbackPrice() {
+        return callbackPrice;
     }
 
-    public void setBidresponse(String bidresponse) {
-        this.bidresponse = bidresponse;
+    public void setCallbackPrice(BigDecimal callbackPrice) {
+        this.callbackPrice = callbackPrice;
     }
 
     public LocalDateTime getCreateTime() {
@@ -147,16 +121,14 @@ public class TBidRecord implements Serializable {
 
     @Override
     public String toString() {
-        return "TBidRecord{" +
-                "id=" + id +
-                ", pmediaid=" + pmediaid +
-                ", requestid='" + requestid + '\'' +
-                ", bidid='" + bidid + '\'' +
-                ", impid='" + impid + '\'' +
-                ", bidrequest='" + bidrequest + '\'' +
-                ", bidresponse='" + bidresponse + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
+        return "TCallbackRecord{" +
+        "id=" + id +
+        ", pmediaid=" + pmediaid +
+        ", impid=" + impid +
+        ", bidimpid=" + bidimpid +
+        ", callbackPrice=" + callbackPrice +
+        ", createTime=" + createTime +
+        ", updateTime=" + updateTime +
+        "}";
     }
 }

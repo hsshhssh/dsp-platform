@@ -7,7 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum SeqBizEnum {
 
-    PADPLACEMENT("10", "平台广告位"),
+    PADPLACEMENT("AD", "平台广告位"),
+
+    BIDRESPONSE_ID("RESP", "BidResponse id"),
     ;
 
     private String code;

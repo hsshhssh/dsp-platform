@@ -13,7 +13,7 @@ public enum PAdplacementStatusEnum {
     INIT(1, "初始化"),
     UPLOAD_MATERIAL(2, "已上传素材"),
     REQUEST(3, "已竞价"),
-    CALLBACK(4, "已竞价"),
+    CALLBACK(4, "已回调"),
     ;
 
     private int code;
