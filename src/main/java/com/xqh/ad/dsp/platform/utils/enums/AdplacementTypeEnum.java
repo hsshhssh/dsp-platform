@@ -6,13 +6,16 @@ import lombok.Getter;
 import java.util.Objects;
 
 /**
- * Created by samson.huang on 2019/5/4
+ * 广告位类型
+ * Created by samson.huang on 2019/5/19
  */
 @Getter
 @AllArgsConstructor
-public enum PMediaEnum {
+public enum AdplacementTypeEnum {
 
-    RUAN_GAO(1, "软告"),
+    BANNER(13, "banner"),
+    NATIVE(14, "原生"),
+    VIDEO(15, "视频贴片"),
     ;
 
     private int code;
@@ -23,7 +26,7 @@ public enum PMediaEnum {
             return "";
         }
 
-        for (PMediaEnum en : PMediaEnum.values()) {
+        for (AdplacementTypeEnum en : AdplacementTypeEnum.values()) {
             if (Objects.equals(en.getCode(), code)) {
                 return en.getName();
             }

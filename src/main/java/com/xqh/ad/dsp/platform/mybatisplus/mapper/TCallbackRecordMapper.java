@@ -2,6 +2,7 @@ package com.xqh.ad.dsp.platform.mybatisplus.mapper;
 
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TCallbackRecord;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author K神带你飞
  * @since 2019-05-12
  */
+@Mapper
 public interface TCallbackRecordMapper extends BaseMapper<TCallbackRecord> {
 
 }

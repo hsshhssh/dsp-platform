@@ -6,13 +6,15 @@ import lombok.Getter;
 import java.util.Objects;
 
 /**
- * Created by samson.huang on 2019/5/4
+ * Created by samson.huang on 2019/5/19
  */
 @Getter
 @AllArgsConstructor
-public enum PMediaEnum {
+public enum AdplacementTypedeclareEnum {
 
-    RUAN_GAO(1, "软告"),
+    S_PIC(0, "单图"),
+    S_PIC_S_ART(1, "一图一文"),
+    S_PIC_T_ART(2, "一图二文"),
     ;
 
     private int code;
@@ -23,7 +25,7 @@ public enum PMediaEnum {
             return "";
         }
 
-        for (PMediaEnum en : PMediaEnum.values()) {
+        for (AdplacementTypedeclareEnum en : AdplacementTypedeclareEnum.values()) {
             if (Objects.equals(en.getCode(), code)) {
                 return en.getName();
             }

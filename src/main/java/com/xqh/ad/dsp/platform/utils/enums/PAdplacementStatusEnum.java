@@ -3,6 +3,8 @@ package com.xqh.ad.dsp.platform.utils.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Objects;
+
 /**
  * Created by samson.huang on 2019/5/4
  */
@@ -18,4 +20,17 @@ public enum PAdplacementStatusEnum {
 
     private int code;
     private String name;
+
+    public static String getName(Integer code) {
+        if (null == code) {
+            return "";
+        }
+
+        for (PAdplacementStatusEnum en : PAdplacementStatusEnum.values()) {
+            if (Objects.equals(en.getCode(), code)) {
+                return en.getName();
+            }
+        }
+        return "";
+    }
 }

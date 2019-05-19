@@ -1,10 +1,13 @@
 package com.xqh.ad.dsp.platform;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Sets;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformAdplacement;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformAdplacementService;
 import com.xqh.ad.dsp.platform.service.RuanGaoBidService;
+import com.xqh.ad.dsp.platform.utils.common.MybatisPlusHelper;
 import com.xqh.ad.dsp.platform.utils.enums.PMediaEnum;
 import com.xqh.ad.dsp.platform.utils.ruangao.AdplacementModel;
 import org.junit.Test;
@@ -49,6 +52,18 @@ public class DspPlatformApplicationTests {
         wrapper.eq("pmediaid", 1);
         wrapper.eq("adplacementid", "2");
         adplacementService.update(adplacement, wrapper);
+    }
+
+    @Test
+    public void selectPage() {
+
+        TPlatformAdplacement adplacement = new TPlatformAdplacement();
+        adplacement.setAdplacementid("2");
+
+        Page<TPlatformAdplacement> queryPage = new Page<>(1, 2);
+        IPage<TPlatformAdplacement> page = adplacementService.page(queryPage, MybatisPlusHelper.buildQueryWrapper(adplacement, TPlatformAdplacement.class));
+        System.out.println(page.getTotal());
+        System.out.println(page.getRecords());
     }
 
 }
