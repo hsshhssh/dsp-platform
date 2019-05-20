@@ -44,7 +44,7 @@
         <dependency>
             <groupId>org.hssh.common</groupId>
             <artifactId>zkconf-starter</artifactId>
-            <version>0.0.5</version>
+            <version>0.0.5-SNAPSHOT</version>
         </dependency>
 
         <!--common-->
