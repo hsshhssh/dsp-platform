@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -14,6 +16,7 @@ import java.io.Serializable;
  * @author K神带你飞
  * @since 2019-05-02
  */
+@Data
 public class TPlatformAdplacement implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,6 +44,12 @@ public class TPlatformAdplacement implements Serializable {
      */
     @TableField("adplacementid")
     private String adplacementid;
+
+    /**
+     * 广告位名称
+     */
+    @TableField("adplacementname")
+    private String adplacementname;
 
     /**
      * 媒体id
@@ -107,145 +116,4 @@ public class TPlatformAdplacement implements Serializable {
      */
     @TableField("update_time")
     private LocalDateTime updateTime;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPadplacementid() {
-        return padplacementid;
-    }
-
-    public void setPadplacementid(String padplacementid) {
-        this.padplacementid = padplacementid;
-    }
-
-    public Integer getPmediaid() {
-        return pmediaid;
-    }
-
-    public void setPmediaid(Integer pmediaid) {
-        this.pmediaid = pmediaid;
-    }
-
-    public String getAdplacementid() {
-        return adplacementid;
-    }
-
-    public void setAdplacementid(String adplacementid) {
-        this.adplacementid = adplacementid;
-    }
-
-    public Integer getMediaid() {
-        return mediaid;
-    }
-
-    public void setMediaid(Integer mediaid) {
-        this.mediaid = mediaid;
-    }
-
-    public String getMedianame() {
-        return medianame;
-    }
-
-    public void setMedianame(String medianame) {
-        this.medianame = medianame;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Integer getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(Integer platform) {
-        this.platform = platform;
-    }
-
-    public Integer getTypedeclare() {
-        return typedeclare;
-    }
-
-    public void setTypedeclare(Integer typedeclare) {
-        this.typedeclare = typedeclare;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
-    public Integer getBidfloor() {
-        return bidfloor;
-    }
-
-    public void setBidfloor(Integer bidfloor) {
-        this.bidfloor = bidfloor;
-    }
-
-    public String getAllowmaterial() {
-        return allowmaterial;
-    }
-
-    public void setAllowmaterial(String allowmaterial) {
-        this.allowmaterial = allowmaterial;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "TPlatformAdplacement{" +
-        "id=" + id +
-        ", padplacementid=" + padplacementid +
-        ", pmediaid=" + pmediaid +
-        ", adplacementid=" + adplacementid +
-        ", mediaid=" + mediaid +
-        ", medianame=" + medianame +
-        ", type=" + type +
-        ", platform=" + platform +
-        ", typedeclare=" + typedeclare +
-        ", size=" + size +
-        ", bidfloor=" + bidfloor +
-        ", allowmaterial=" + allowmaterial +
-        ", createTime=" + createTime +
-        ", updateTime=" + updateTime +
-        "}";
-    }
 }

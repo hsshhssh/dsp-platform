@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -15,6 +17,7 @@ import java.io.Serializable;
  * @author K神带你飞
  * @since 2019-05-02
  */
+@Data
 public class TPlatformMaterial implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,6 +33,12 @@ public class TPlatformMaterial implements Serializable {
      */
     @TableField("padplacementid")
     private String padplacementid;
+
+    /**
+     * 广告位名称
+     */
+    @TableField("adplacementname")
+    private String adplacementname;
 
     /**
      * 平台媒体id
@@ -86,108 +95,4 @@ public class TPlatformMaterial implements Serializable {
     private LocalDateTime updateTime;
 
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPadplacementid() {
-        return padplacementid;
-    }
-
-    public void setPadplacementid(String padplacementid) {
-        this.padplacementid = padplacementid;
-    }
-
-    public Integer getPmediaid() {
-        return pmediaid;
-    }
-
-    public void setPmediaid(Integer pmediaid) {
-        this.pmediaid = pmediaid;
-    }
-
-    public String getAdplacementid() {
-        return adplacementid;
-    }
-
-    public void setAdplacementid(String adplacementid) {
-        this.adplacementid = adplacementid;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public String getAdm() {
-        return adm;
-    }
-
-    public void setAdm(String adm) {
-        this.adm = adm;
-    }
-
-    public String getCrid() {
-        return crid;
-    }
-
-    public void setCrid(String crid) {
-        this.crid = crid;
-    }
-
-    public String getAdtype() {
-        return adtype;
-    }
-
-    public void setAdtype(String adtype) {
-        this.adtype = adtype;
-    }
-
-    public String getExt() {
-        return ext;
-    }
-
-    public void setExt(String ext) {
-        this.ext = ext;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "TPlatformMaterial{" +
-        "id=" + id +
-        ", padplacementid=" + padplacementid +
-        ", pmediaid=" + pmediaid +
-        ", adplacementid=" + adplacementid +
-        ", price=" + price +
-        ", adm=" + adm +
-        ", crid=" + crid +
-        ", adtype=" + adtype +
-        ", ext=" + ext +
-        ", createTime=" + createTime +
-        ", updateTime=" + updateTime +
-        "}";
-    }
 }

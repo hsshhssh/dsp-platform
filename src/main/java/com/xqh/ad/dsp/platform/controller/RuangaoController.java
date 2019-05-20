@@ -7,6 +7,7 @@ import com.xqh.ad.dsp.platform.model.BidResponse;
 import com.xqh.ad.dsp.platform.service.RuanGaoBidService;
 import com.xqh.ad.dsp.platform.utils.AsyncUtils;
 import com.xqh.ad.dsp.platform.utils.WinNoticeUtils;
+import com.xqh.ad.dsp.platform.utils.common.ResponseBean;
 import com.xqh.ad.dsp.platform.utils.enums.PMediaEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -33,10 +34,15 @@ public class RuangaoController {
      * 软告同步广告位接口
      * @return
      */
-    @GetMapping("async/adplacement")
-    public String asyncAdPlacement() {
-        ruanGaoBidService.asyncAdplacement();
-        return "success";
+    @GetMapping("sync/adplacement")
+    public ResponseBean<String> asyncAdPlacement() {
+        try {
+            ruanGaoBidService.asyncAdplacement();
+        } catch (Exception e) {
+            log.error("软告广告位同步失败", e);
+            return new ResponseBean<>("fail");
+        }
+        return new ResponseBean<>("success");
     }
 
     /**

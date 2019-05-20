@@ -17,6 +17,7 @@ public class AdplacementVO {
     private String padplacementid;
     private Integer pmediaid;
     private String adplacementid;
+    private String adplacementname;
     private Integer mediaid;
     private String medianame;
     private Integer type;

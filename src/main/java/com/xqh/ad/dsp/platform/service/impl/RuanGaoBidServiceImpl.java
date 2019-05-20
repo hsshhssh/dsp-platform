@@ -164,6 +164,7 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
             adplacement.setPadplacementid(seqNoUtils.getNextSeqNo(SeqBizEnum.PADPLACEMENT));
             adplacement.setPmediaid(PMediaEnum.RUAN_GAO.getCode());
             adplacement.setAdplacementid(id);
+            adplacement.setAdplacementname(model.getAdplacementname()   );
             adplacement.setMediaid(model.getMediaid());
             adplacement.setMedianame(model.getMedianame());
             adplacement.setType(model.getType());
