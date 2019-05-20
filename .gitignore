@@ -28,4 +28,6 @@ HELP.md
 ### VS Code ###
 .vscode/
 
+*.log*
+*.sh*
 **/.DS_Stores/*
