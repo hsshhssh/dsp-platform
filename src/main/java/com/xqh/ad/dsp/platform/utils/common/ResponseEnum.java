@@ -12,7 +12,7 @@ public enum ResponseEnum {
 
     SUCCESS("00000", "成功"),
 
-
+    AD_NOT_EXIT("10000", "广告位不存在"),
     ;
 
     private String code;
