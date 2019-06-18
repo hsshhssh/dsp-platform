@@ -9,7 +9,7 @@ import lombok.Data;
 public class BidResponse {
     private String id;
     private String bidid;
-    private String seatbid;
+    private Object seatbid;
     private Integer nbr;
 
     @Data
@@ -18,17 +18,17 @@ public class BidResponse {
         private String impid;
         private float price;
         private String nurl;
-        private String adm;
+        private Object adm;
         private String crid;
         private String adtype;
-        private String ext;
+        private Object ext;
     }
 
     @Data
     public static class Adm {
         private String adId;
         private String materialUrl;
-        private String dspApiMaterialInnerReqDTO;
+        private Object dspApiMaterialInnerReqDTO;
     }
 
     @Data
@@ -37,9 +37,9 @@ public class BidResponse {
         private String landingpage;
         private Integer platform;
         private String materialtype;
-        private String pc;
-        private String mobile;
-        private String video;
+        private Object pc;
+        private Object mobile;
+        private Object video;
         private Integer width;
         private Integer height;
         private String iconurl;

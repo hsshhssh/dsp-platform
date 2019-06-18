@@ -63,6 +63,7 @@ public class MaterialController {
         JSONObject respJson = new JSONObject();
         respJson.put("padplacementid", padplacementid);
         respJson.put("pmediaStr", PMediaEnum.getName(adplacement.getPmediaid()));
+        respJson.put("pmediaid", adplacement.getPmediaid());
         respJson.put("adplacementid", adplacement.getAdplacementid());
         respJson.put("adplacementname", adplacement.getAdplacementname());
 

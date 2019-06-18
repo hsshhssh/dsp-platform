@@ -60,7 +60,7 @@ public class RuangaoController {
 
         BidResponse bidResponse = ruanGaoBidService.getBidResponse(bidRequest);
         asyncUtils.handlePublish(bidRequest, requestJson, bidResponse, PMediaEnum.RUAN_GAO);
-        return JSONObject.toJSONString(bidRequest);
+        return JSONObject.toJSONString(bidResponse);
     }
 
     /**

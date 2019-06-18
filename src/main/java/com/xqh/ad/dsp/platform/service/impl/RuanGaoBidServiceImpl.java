@@ -105,7 +105,7 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
 
         // seatbid
         List<Map<String, List<BidResponse.Bid>>> seatbid = getSeatbid(request);
-        response.setSeatbid(JSONObject.toJSONString(seatbid));
+        response.setSeatbid(seatbid);
         return response;
     }
 
