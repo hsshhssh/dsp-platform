@@ -21,6 +21,7 @@ public class AdplacementListDTO extends PageDTO {
     private Integer typedeclare;
     // 状态
     private Integer status;
-
+    // 媒体名称
+    private String medianame_like;
 
 }

@@ -13,6 +13,7 @@ import java.util.Objects;
 public enum PMediaEnum {
 
     RUAN_GAO(1, "软告"),
+    BI_YI(2, "必忆"),
     ;
 
     private int code;

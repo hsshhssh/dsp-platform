@@ -10,11 +10,13 @@ import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformAdplacement;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformMaterial;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformAdplacementService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformMaterialService;
+import com.xqh.ad.dsp.platform.utils.SeqNoUtils;
 import com.xqh.ad.dsp.platform.utils.common.MybatisPlusHelper;
 import com.xqh.ad.dsp.platform.utils.common.PageResult;
 import com.xqh.ad.dsp.platform.utils.common.ResponseBean;
 import com.xqh.ad.dsp.platform.utils.common.ResponseEnum;
 import com.xqh.ad.dsp.platform.utils.enums.PMediaEnum;
+import com.xqh.ad.dsp.platform.utils.enums.SeqBizEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,10 +39,12 @@ public class MaterialController {
     private ITPlatformMaterialService materialService;
     @Resource
     private ITPlatformAdplacementService adplacementService;
+    @Resource
+    private SeqNoUtils seqNoUtils;
 
     @PostMapping("/list")
     public ResponseBean<PageResult<MaterialVO>> list(@RequestBody MaterialListDTO listDTO) {
-        Page<TPlatformMaterial> pageQuery = new Page<>(listDTO.getPage(), listDTO.getSize());
+        Page<TPlatformMaterial> pageQuery = new Page<>(listDTO.getPage(), listDTO.getLimit());
         QueryWrapper<TPlatformMaterial> queryWrapper = MybatisPlusHelper.buildQueryWrapper(listDTO, TPlatformMaterial.class);
         queryWrapper.orderByDesc("id");
 
@@ -79,6 +83,7 @@ public class MaterialController {
             respJson.put("adm", JSONObject.parseObject(material.getAdm()));
         } else {
             JSONObject adm = new JSONObject();
+            adm.put("adId", seqNoUtils.getNextSeqNo(SeqBizEnum.ADM_AD_ID));
             JSONObject inner = new JSONObject();
             JSONObject pc = new JSONObject();
             JSONObject mobile = new JSONObject();
@@ -86,8 +91,11 @@ public class MaterialController {
             inner.put("pc", pc);
             inner.put("video", video);
             inner.put("mobile", mobile);
-            adm.put("inner", inner);
+            adm.put("dspApiMaterialInnerReqDTO", inner);
             respJson.put("adm", adm);
+
+            // 创意id
+            respJson.put("crid", seqNoUtils.getNextSeqNo(SeqBizEnum.CRID));
         }
 
         return new ResponseBean<>(respJson);

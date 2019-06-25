@@ -36,7 +36,7 @@ public class AdplacementController {
     @PostMapping("/list")
     public ResponseBean<PageResult<AdplacementVO>> list(@RequestBody AdplacementListDTO listDTO) {
         log.info("广告位列表-请求参数:{}", JSONObject.toJSONString(listDTO));
-        Page<TPlatformAdplacement> pageQuery = new Page<>(listDTO.getPage(), listDTO.getSize());
+        Page<TPlatformAdplacement> pageQuery = new Page<>(listDTO.getPage(), listDTO.getLimit());
         QueryWrapper<TPlatformAdplacement> queryWrapper = MybatisPlusHelper.buildQueryWrapper(listDTO, TPlatformAdplacement.class);
         queryWrapper.orderByDesc("id");
 

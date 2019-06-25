@@ -25,7 +25,11 @@ public class MybatisPlusHelper {
                 field.setAccessible(true);
                 Object o = field.get(entity);
                 if (o != null) {
-                    wrapper.eq(fileName, o);
+                    if(fileName.endsWith("_like")) {
+                        wrapper.like(fileName.substring(0, fileName.indexOf("_like")), "%" + o + "%");
+                    } else {
+                        wrapper.eq(fileName, o);
+                    }
                 }
             }
             return wrapper;

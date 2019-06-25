@@ -11,5 +11,5 @@ import java.util.List;
 public class PageDTO
 {
     protected long page = 1;
-    protected long size = 10;
+    protected long limit = 10;
 }
