@@ -7,6 +7,7 @@ import com.xqh.ad.dsp.platform.utils.WinNoticeUtils;
 import com.xqh.ad.dsp.platform.utils.enums.PMediaEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -17,7 +18,8 @@ import java.math.BigDecimal;
  * Created by samson.huang on 2019/6/25
  */
 @Slf4j
-@RestController("dsp")
+@RestController
+@RequestMapping("dsp")
 public class CallbackController {
 
     @Resource
