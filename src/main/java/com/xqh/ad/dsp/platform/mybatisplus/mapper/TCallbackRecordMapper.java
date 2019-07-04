@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -19,8 +20,8 @@ import java.util.Map;
 @Mapper
 public interface TCallbackRecordMapper extends BaseMapper<TCallbackRecord> {
 
-    public List<Map<String, Object>> countGroupBy(@Param("columnName") String columnName, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    public List<Map<String, Object>> countGroupBy(@Param("columnName") String columnName, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 
-    public List<Map<String, Object>> sumPriceGroupBy(@Param("columnName") String columnName, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    public List<Map<String, Object>> sumPriceGroupBy(@Param("columnName") String columnName, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 
 }

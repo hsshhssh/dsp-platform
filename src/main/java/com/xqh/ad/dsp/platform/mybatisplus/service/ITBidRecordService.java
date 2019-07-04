@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TBidRecord;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -18,6 +19,6 @@ public interface ITBidRecordService extends IService<TBidRecord> {
 
     TBidRecord getByBididAndImpid(String bidid, String impid);
 
-    Map<String, Integer> countGroupBy(@Param("columnName") String columnName, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    Map<String, Integer> countGroupBy(@Param("columnName") String columnName, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 
 }

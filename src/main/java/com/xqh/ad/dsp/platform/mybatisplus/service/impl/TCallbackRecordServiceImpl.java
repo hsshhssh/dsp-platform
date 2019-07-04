@@ -8,6 +8,7 @@ import com.xqh.ad.dsp.platform.mybatisplus.service.ITCallbackRecordService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class TCallbackRecordServiceImpl extends ServiceImpl<TCallbackRecordMappe
 
 
     @Override
-    public Map<String, Integer> countGroupBy(String columnName, String startTime, String endTime) {
+    public Map<String, Integer> countGroupBy(String columnName, LocalDateTime startTime, LocalDateTime endTime) {
         List<Map<String, Object>> list = baseMapper.countGroupBy(columnName, startTime, endTime);
         Map<String, Integer> map = Maps.newHashMap();
         for (Map<String, Object> tempMap : list) {
@@ -34,7 +35,7 @@ public class TCallbackRecordServiceImpl extends ServiceImpl<TCallbackRecordMappe
     }
 
     @Override
-    public Map<String, BigDecimal> sumPriceGroupBy(String columnName, String startTime, String endTime) {
+    public Map<String, BigDecimal> sumPriceGroupBy(String columnName, LocalDateTime startTime, LocalDateTime endTime) {
         List<Map<String, Object>> list = baseMapper.sumPriceGroupBy(columnName, startTime, endTime);
         Map<String, BigDecimal> map = Maps.newHashMap();
         for (Map<String, Object> tempMap : list) {

@@ -21,6 +21,6 @@ import java.util.Map;
 @Mapper
 public interface TBidRecordMapper extends BaseMapper<TBidRecord> {
 
-    List<Map<String, Object>> countGroupBy(@Param("columnName") String columnName, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<Map<String, Object>> countGroupBy(@Param("columnName") String columnName, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 
 }

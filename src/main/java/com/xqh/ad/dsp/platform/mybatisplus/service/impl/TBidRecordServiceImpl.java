@@ -9,6 +9,7 @@ import com.xqh.ad.dsp.platform.mybatisplus.service.ITBidRecordService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ public class TBidRecordServiceImpl extends ServiceImpl<TBidRecordMapper, TBidRec
     }
 
     @Override
-    public Map<String, Integer> countGroupBy(String columnName, String startTime, String endTime) {
+    public Map<String, Integer> countGroupBy(String columnName, LocalDateTime startTime, LocalDateTime endTime) {
         List<Map<String, Object>> list = baseMapper.countGroupBy(columnName, startTime, endTime);
         Map<String, Integer> map = Maps.newHashMap();
         for (Map<String, Object> tempMap : list) {

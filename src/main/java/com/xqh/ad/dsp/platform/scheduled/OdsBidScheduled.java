@@ -7,6 +7,7 @@ import com.xqh.ad.dsp.platform.mybatisplus.service.ITBidRecordService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITCallbackRecordService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITOdsBidDateService;
 import com.xqh.ad.dsp.platform.utils.CommonUtils;
+import com.xqh.ad.dsp.platform.utils.enums.OdsTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -33,8 +34,8 @@ public class OdsBidScheduled {
     @Scheduled(cron="0 5 0 * * *")
     public void odsBidScheduled() {
 
-        String startDate = CommonUtils.getZeroHourTimeDate(-1);
-        String endDate = CommonUtils.getZeroHourTimeDate(0);
+        LocalDateTime startDate = CommonUtils.getZeroHourTime(-1);
+        LocalDateTime endDate = CommonUtils.getZeroHourTime(0);
 
         // 平台媒体
         Map<String, Integer> pmediaidRequestMap = bidRecordService.countGroupBy("pmediaid", startDate, endDate);
@@ -69,7 +70,7 @@ public class OdsBidScheduled {
         for (String pmediaid : pmediaidSet) {
             TOdsBidDate ods = new TOdsBidDate();
             ods.setOdsDate(odsDate);
-            ods.setOdsType(1);
+            ods.setOdsType(OdsTypeEnum.PMEDIAID.getCode());
             ods.setOdsValue(pmediaid);
             ods.setBid(pmediaidRequestMap.get(pmediaid));
             ods.setBidsucc(pmediaidCallbackMap.get(pmediaid));
@@ -81,7 +82,7 @@ public class OdsBidScheduled {
         for (String mediaid : mediaidSet) {
             TOdsBidDate ods = new TOdsBidDate();
             ods.setOdsDate(odsDate);
-            ods.setOdsType(2);
+            ods.setOdsType(OdsTypeEnum.MEDIAID.getCode());
             ods.setOdsValue(mediaid);
             ods.setBid(mediaidRequestMap.get(mediaid));
             ods.setBidsucc(mediaidCallbackMap.get(mediaid));
@@ -93,7 +94,7 @@ public class OdsBidScheduled {
         for (String padplacementid : padplacementidSet) {
             TOdsBidDate ods = new TOdsBidDate();
             ods.setOdsDate(odsDate);
-            ods.setOdsType(3);
+            ods.setOdsType(OdsTypeEnum.PADPLACEMENTID.getCode());
             ods.setOdsValue(padplacementid);
             ods.setBid(padplacementidRequestMap.get(padplacementid));
             ods.setBidsucc(padplacementidCallbackMap.get(padplacementid));
@@ -105,7 +106,7 @@ public class OdsBidScheduled {
         for (String materialid : materialidSet) {
             TOdsBidDate ods = new TOdsBidDate();
             ods.setOdsDate(odsDate);
-            ods.setOdsType(4);
+            ods.setOdsType(OdsTypeEnum.MATERIALID.getCode());
             ods.setOdsValue(materialid);
             ods.setBid(materialidRequestMap.get(materialid));
             ods.setBidsucc(materialidCallbackMap.get(materialid));

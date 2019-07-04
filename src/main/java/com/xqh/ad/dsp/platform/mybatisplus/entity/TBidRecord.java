@@ -3,6 +3,7 @@ package com.xqh.ad.dsp.platform.mybatisplus.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
  * @author K神带你飞
  * @since 2019-07-02
  */
+@Data
 public class TBidRecord implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -100,109 +102,4 @@ public class TBidRecord implements Serializable {
         this.id = id;
     }
 
-    public Integer getPmediaid() {
-        return pmediaid;
-    }
-
-    public void setPmediaid(Integer pmediaid) {
-        this.pmediaid = pmediaid;
-    }
-
-    public String getRequestid() {
-        return requestid;
-    }
-
-    public void setRequestid(String requestid) {
-        this.requestid = requestid;
-    }
-
-    public String getBidid() {
-        return bidid;
-    }
-
-    public void setBidid(String bidid) {
-        this.bidid = bidid;
-    }
-
-    public String getMediaid() {
-        return mediaid;
-    }
-
-    public void setMediaid(String mediaid) {
-        this.mediaid = mediaid;
-    }
-
-    public String getPadplacementid() {
-        return padplacementid;
-    }
-
-    public void setPadplacementid(String padplacementid) {
-        this.padplacementid = padplacementid;
-    }
-
-    public String getMaterialid() {
-        return materialid;
-    }
-
-    public void setMaterialid(String materialid) {
-        this.materialid = materialid;
-    }
-
-    public String getImpid() {
-        return impid;
-    }
-
-    public void setImpid(String impid) {
-        this.impid = impid;
-    }
-
-    public String getBidrequest() {
-        return bidrequest;
-    }
-
-    public void setBidrequest(String bidrequest) {
-        this.bidrequest = bidrequest;
-    }
-
-    public String getBidresponse() {
-        return bidresponse;
-    }
-
-    public void setBidresponse(String bidresponse) {
-        this.bidresponse = bidresponse;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "TBidRecord{" +
-        "id=" + id +
-        ", pmediaid=" + pmediaid +
-        ", requestid=" + requestid +
-        ", bidid=" + bidid +
-        ", mediaid=" + mediaid +
-        ", padplacementid=" + padplacementid +
-        ", materialid=" + materialid +
-        ", impid=" + impid +
-        ", bidrequest=" + bidrequest +
-        ", bidresponse=" + bidresponse +
-        ", createTime=" + createTime +
-        ", updateTime=" + updateTime +
-        "}";
-    }
 }

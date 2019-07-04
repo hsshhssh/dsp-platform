@@ -27,7 +27,16 @@ public class MybatisPlusHelper {
                 if (o != null) {
                     if(fileName.endsWith("_like")) {
                         wrapper.like(fileName.substring(0, fileName.indexOf("_like")), "%" + o + "%");
-                    } else {
+                    } else if (fileName.endsWith("_gte")) {
+                        wrapper.ge(fileName.substring(0, fileName.indexOf("_gte")), o);
+                    } else if (fileName.endsWith("_lte")) {
+                        wrapper.le(fileName.substring(0, fileName.indexOf("_lte")), o);
+                    }
+                    else if (fileName.endsWith("_ignore")) {
+                        // 忽略
+                        continue;
+                    }
+                    else {
                         wrapper.eq(fileName, o);
                     }
                 }

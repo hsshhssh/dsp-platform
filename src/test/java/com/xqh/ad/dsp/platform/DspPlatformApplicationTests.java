@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -43,11 +44,19 @@ public class DspPlatformApplicationTests {
 
     @Test
     public void bidRecordGroupByTest() {
-        String startDate = CommonUtils.getZeroHourTimeDate(-1);
-        String endDate = CommonUtils.getZeroHourTimeDate(0);
+        LocalDateTime startDate = CommonUtils.getZeroHourTime(-1);
+        LocalDateTime endDate = CommonUtils.getZeroHourTime(0);
 
-        List<Map<String, Object>> pmediaid = tBidRecordMapper.countGroupBy("pmediaid", startDate, endDate);
-        //List<Map<String, Object>> pmediaid = tBidRecordMapper.countGroupBy("pmediaid");
+        //QueryWrapper<TBidRecord> wrapper = new QueryWrapper<>();
+        //wrapper.select("mediaid", "count(*) as count");
+        //wrapper.ge("create_time", startDate);
+        //wrapper.lt("create_time", endDate);
+        //wrapper.groupBy("mediaid");
+        //System.out.println(wrapper.getSqlSegment());
+        //List<Map<String, Object>> maps = tBidRecordMapper.selectMaps(wrapper);
+        //System.out.println(maps);
+
+        List<Map<String, Object>> pmediaid = tBidRecordMapper.countGroupBy("mediaid", startDate, endDate);
         System.out.println(pmediaid);
     }
 
