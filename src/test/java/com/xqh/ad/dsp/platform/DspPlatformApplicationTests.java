@@ -5,8 +5,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Sets;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformAdplacement;
+import com.xqh.ad.dsp.platform.mybatisplus.mapper.TBidRecordMapper;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformAdplacementService;
+import com.xqh.ad.dsp.platform.scheduled.OdsBidScheduled;
 import com.xqh.ad.dsp.platform.service.RuanGaoBidService;
+import com.xqh.ad.dsp.platform.utils.CommonUtils;
 import com.xqh.ad.dsp.platform.utils.common.MybatisPlusHelper;
 import com.xqh.ad.dsp.platform.utils.enums.PMediaEnum;
 import com.xqh.ad.dsp.platform.utils.ruangao.AdplacementModel;
@@ -17,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RunWith(SpringRunner.class)
@@ -27,6 +31,25 @@ public class DspPlatformApplicationTests {
     private RuanGaoBidService ruanGaoBidService;
     @Autowired
     private ITPlatformAdplacementService adplacementService;
+    @Autowired
+    private TBidRecordMapper tBidRecordMapper;
+    @Autowired
+    private OdsBidScheduled odsBidScheduled;
+
+    @Test
+    public void odsBidScheduledTest() {
+        odsBidScheduled.odsBidScheduled();
+    }
+
+    @Test
+    public void bidRecordGroupByTest() {
+        String startDate = CommonUtils.getZeroHourTimeDate(-1);
+        String endDate = CommonUtils.getZeroHourTimeDate(0);
+
+        List<Map<String, Object>> pmediaid = tBidRecordMapper.countGroupBy("pmediaid", startDate, endDate);
+        //List<Map<String, Object>> pmediaid = tBidRecordMapper.countGroupBy("pmediaid");
+        System.out.println(pmediaid);
+    }
 
     @Test
     public void getAdListTest() {

@@ -1,8 +1,9 @@
 package com.xqh.ad.dsp.platform.mybatisplus.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author K神带你飞
- * @since 2019-05-02
+ * @since 2019-07-02
  */
 public class TBidRecord implements Serializable {
 
@@ -41,6 +42,24 @@ public class TBidRecord implements Serializable {
      */
     @TableField("bidid")
     private String bidid;
+
+    /**
+     * 媒体id
+     */
+    @TableField("mediaid")
+    private String mediaid;
+
+    /**
+     * 广告为id
+     */
+    @TableField("padplacementid")
+    private String padplacementid;
+
+    /**
+     * 素材id
+     */
+    @TableField("materialid")
+    private String materialid;
 
     /**
      * 曝光id（逗号分割）
@@ -105,6 +124,30 @@ public class TBidRecord implements Serializable {
         this.bidid = bidid;
     }
 
+    public String getMediaid() {
+        return mediaid;
+    }
+
+    public void setMediaid(String mediaid) {
+        this.mediaid = mediaid;
+    }
+
+    public String getPadplacementid() {
+        return padplacementid;
+    }
+
+    public void setPadplacementid(String padplacementid) {
+        this.padplacementid = padplacementid;
+    }
+
+    public String getMaterialid() {
+        return materialid;
+    }
+
+    public void setMaterialid(String materialid) {
+        this.materialid = materialid;
+    }
+
     public String getImpid() {
         return impid;
     }
@@ -148,15 +191,18 @@ public class TBidRecord implements Serializable {
     @Override
     public String toString() {
         return "TBidRecord{" +
-                "id=" + id +
-                ", pmediaid=" + pmediaid +
-                ", requestid='" + requestid + '\'' +
-                ", bidid='" + bidid + '\'' +
-                ", impid='" + impid + '\'' +
-                ", bidrequest='" + bidrequest + '\'' +
-                ", bidresponse='" + bidresponse + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
+        "id=" + id +
+        ", pmediaid=" + pmediaid +
+        ", requestid=" + requestid +
+        ", bidid=" + bidid +
+        ", mediaid=" + mediaid +
+        ", padplacementid=" + padplacementid +
+        ", materialid=" + materialid +
+        ", impid=" + impid +
+        ", bidrequest=" + bidrequest +
+        ", bidresponse=" + bidresponse +
+        ", createTime=" + createTime +
+        ", updateTime=" + updateTime +
+        "}";
     }
 }

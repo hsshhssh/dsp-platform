@@ -3,7 +3,7 @@ package com.xqh.ad.dsp.platform.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.google.openrtb.OpenRtb;
 import com.google.openrtb.json.OpenRtbJsonFactory;
-import com.xqh.ad.dsp.platform.model.BidResponse;
+import com.xqh.ad.dsp.platform.model.BidResponseModel;
 import com.xqh.ad.dsp.platform.service.RuanGaoBidService;
 import com.xqh.ad.dsp.platform.utils.AsyncUtils;
 import com.xqh.ad.dsp.platform.utils.WinNoticeUtils;
@@ -58,9 +58,9 @@ public class RuangaoController {
             return "解析请求参数异常";
         }
 
-        BidResponse bidResponse = ruanGaoBidService.getBidResponse(bidRequest);
-        asyncUtils.handlePublish(bidRequest, requestJson, bidResponse, PMediaEnum.RUAN_GAO);
-        return JSONObject.toJSONString(bidResponse);
+        BidResponseModel bidResponseModel = ruanGaoBidService.getBidResponse(bidRequest);
+        asyncUtils.handlePublish(requestJson, bidResponseModel, PMediaEnum.RUAN_GAO);
+        return JSONObject.toJSONString(bidResponseModel.getBidResponse());
     }
 
     /**

@@ -2,4 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xqh.ad.dsp.platform.mybatisplus.mapper.TCallbackRecordMapper">
 
+    <select id="countGroupBy" resultType="java.util.Map">
+        select ${columnName}, count(*) as count
+        from t_callback_record
+        where create_time &gt;= #{startTime}
+        and create_time &lt; #{endTime}
+        group by ${columnName}
+    </select>
+
+    <select id="sumPriceGroupBy" resultType="java.util.Map">
+        select ${columnName}, sum(callback_price) as total
+        from t_callback_record
+        where create_time &gt;= #{startTime}
+        and create_time &lt; #{endTime}
+        group by ${columnName}
+    </select>
 </mapper>

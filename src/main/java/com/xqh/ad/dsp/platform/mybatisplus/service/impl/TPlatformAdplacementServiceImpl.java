@@ -53,4 +53,12 @@ public class TPlatformAdplacementServiceImpl extends ServiceImpl<TPlatformAdplac
             baseMapper.insert(adplacement);
         }
     }
+
+    @Override
+    public TPlatformAdplacement selectByAdplacementId(Integer pmediaid, String adplacementid) {
+        QueryWrapper<TPlatformAdplacement> adQuery = new QueryWrapper<>();
+        adQuery.eq("pmediaid", pmediaid);
+        adQuery.eq("adplacementid", adplacementid);
+        return baseMapper.selectOne(adQuery);
+    }
 }

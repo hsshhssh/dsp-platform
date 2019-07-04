@@ -6,9 +6,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.openrtb.OpenRtb;
 import com.xqh.ad.dsp.platform.model.BidResponse;
+import com.xqh.ad.dsp.platform.model.BidResponseModel;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TCallbackRecord;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformAdplacement;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformMaterial;
+import com.xqh.ad.dsp.platform.mybatisplus.service.ITBidRecordService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITCallbackRecordService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformAdplacementService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformMaterialService;
@@ -94,7 +96,13 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
      * @return
      */
     @Override
-    public BidResponse getBidResponse(OpenRtb.BidRequest request) {
+    public BidResponseModel getBidResponse(OpenRtb.BidRequest request) {
+        BidResponseModel bidResponseModel = new BidResponseModel();
+
+        // requestRecordModelList
+        List<BidResponseModel.RequestRecordModel> requestRecordModelList = Lists.newArrayList();
+
+        // 竞价接口响应对象
         BidResponse response = new BidResponse();
         // 请求id
         response.setId(request.getId());
@@ -103,13 +111,17 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
         String bidderResponseId = seqNoUtils.getNextSeqNo(SeqBizEnum.BIDRESPONSE_ID);
         response.setBidid(bidderResponseId);
 
+
         // seatbid
-        List<Map<String, List<BidResponse.Bid>>> seatbid = getSeatbid(request);
+        List<Map<String, List<BidResponse.Bid>>> seatbid = getSeatbid(request, requestRecordModelList);
         response.setSeatbid(seatbid);
-        return response;
+
+        bidResponseModel.setBidResponse(response);
+        bidResponseModel.setRecordModelList(requestRecordModelList);
+        return bidResponseModel;
     }
 
-    public List<Map<String, List<BidResponse.Bid>>> getSeatbid(OpenRtb.BidRequest request) {
+    public List<Map<String, List<BidResponse.Bid>>> getSeatbid(OpenRtb.BidRequest request, List<BidResponseModel.RequestRecordModel> requestRecordModelList) {
         List<BidResponse.Bid> bidList = Lists.newArrayList();
         List<Map<String, List<BidResponse.Bid>>> seatbid = Lists.newArrayList();
         Map<String, List<BidResponse.Bid>> bidMap = Maps.newHashMap();
@@ -123,8 +135,15 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
         Map<String, TPlatformMaterial> materialMap = materialService.getByAdplacementid(adplacementidList, PMediaEnum.RUAN_GAO);
 
         for (OpenRtb.BidRequest.Imp imp : request.getImpList()) {
+            // requestRecordModel
+            BidResponseModel.RequestRecordModel requestRecordModel = new BidResponseModel.RequestRecordModel();
+            requestRecordModel.setPmediaid(PMediaEnum.RUAN_GAO.getCode());
+
             TPlatformMaterial material = materialMap.get(imp.getTagid());
             if (material == null) {
+                requestRecordModel.setImpid(imp.getId());
+                requestRecordModel.setAdplacementid(imp.getTagid());
+                requestRecordModelList.add(requestRecordModel);
                 log.error("软告竞价-未上传素材 adplacementid:{}", imp.getTagid());
                 continue;
             }
@@ -142,8 +161,12 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
             bid.setCrid(material.getCrid());
             bid.setAdtype(material.getAdtype());
             bid.setExt(material.getExt());
-
             bidList.add(bid);
+
+            requestRecordModel.setImpid(imp.getId());
+            requestRecordModel.setAdplacementid(imp.getTagid());
+            requestRecordModel.setMaterialid(String.valueOf(material.getId()));
+            requestRecordModelList.add(requestRecordModel);
         }
 
         return seatbid;
@@ -164,7 +187,7 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
             adplacement.setPadplacementid(seqNoUtils.getNextSeqNo(SeqBizEnum.PADPLACEMENT));
             adplacement.setPmediaid(PMediaEnum.RUAN_GAO.getCode());
             adplacement.setAdplacementid(id);
-            adplacement.setAdplacementname(model.getAdplacementname()   );
+            adplacement.setAdplacementname(model.getAdplacementname());
             adplacement.setMediaid(model.getMediaid());
             adplacement.setMedianame(model.getMedianame());
             adplacement.setType(model.getType());
