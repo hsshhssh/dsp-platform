@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author K神带你飞
- * @since 2019-05-12
+ * @since 2019-07-02
  */
 public class TCallbackRecord implements Serializable {
 
@@ -49,6 +49,24 @@ public class TCallbackRecord implements Serializable {
      */
     @TableField("callback_price")
     private BigDecimal callbackPrice;
+
+    /**
+     * 媒体id
+     */
+    @TableField("mediaid")
+    private String mediaid;
+
+    /**
+     * 广告为id
+     */
+    @TableField("padplacementid")
+    private String padplacementid;
+
+    /**
+     * 素材id
+     */
+    @TableField("materialid")
+    private String materialid;
 
     /**
      * 创建时间
@@ -103,6 +121,30 @@ public class TCallbackRecord implements Serializable {
         this.callbackPrice = callbackPrice;
     }
 
+    public String getMediaid() {
+        return mediaid;
+    }
+
+    public void setMediaid(String mediaid) {
+        this.mediaid = mediaid;
+    }
+
+    public String getPadplacementid() {
+        return padplacementid;
+    }
+
+    public void setPadplacementid(String padplacementid) {
+        this.padplacementid = padplacementid;
+    }
+
+    public String getMaterialid() {
+        return materialid;
+    }
+
+    public void setMaterialid(String materialid) {
+        this.materialid = materialid;
+    }
+
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -127,6 +169,9 @@ public class TCallbackRecord implements Serializable {
         ", impid=" + impid +
         ", bidimpid=" + bidimpid +
         ", callbackPrice=" + callbackPrice +
+        ", mediaid=" + mediaid +
+        ", padplacementid=" + padplacementid +
+        ", materialid=" + materialid +
         ", createTime=" + createTime +
         ", updateTime=" + updateTime +
         "}";

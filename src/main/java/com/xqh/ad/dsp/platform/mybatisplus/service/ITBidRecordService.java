@@ -1,7 +1,11 @@
 package com.xqh.ad.dsp.platform.mybatisplus.service;
 
-import com.xqh.ad.dsp.platform.mybatisplus.entity.TBidRecord;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xqh.ad.dsp.platform.mybatisplus.entity.TBidRecord;
+import org.apache.ibatis.annotations.Param;
+
+import java.time.LocalDateTime;
+import java.util.Map;
 
 /**
  * <p>
@@ -12,5 +16,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2019-05-02
  */
 public interface ITBidRecordService extends IService<TBidRecord> {
+
+    TBidRecord getByBididAndImpid(String bidid, String impid);
+
+    Map<String, Integer> countGroupBy(@Param("columnName") String columnName, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 
 }

@@ -1,7 +1,9 @@
 package com.xqh.ad.dsp.platform.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xqh.ad.dsp.platform.mybatisplus.entity.TBidRecord;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TCallbackRecord;
+import com.xqh.ad.dsp.platform.mybatisplus.service.ITBidRecordService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITCallbackRecordService;
 import com.xqh.ad.dsp.platform.utils.WinNoticeUtils;
 import com.xqh.ad.dsp.platform.utils.enums.PMediaEnum;
@@ -24,6 +26,8 @@ public class CallbackController {
 
     @Resource
     private ITCallbackRecordService callbackRecordService;
+    @Resource
+    private ITBidRecordService bidRecordService;
 
     @GetMapping("callback")
     public String winNotice(HttpServletRequest request) {
@@ -38,6 +42,14 @@ public class CallbackController {
             callbackRecord.setImpid(winNoticeRequest.getImpId());
             callbackRecord.setBidimpid(winNoticeRequest.getBidImpId());
             callbackRecord.setCallbackPrice(BigDecimal.valueOf(Double.valueOf(winNoticeRequest.getPrice())));
+
+            TBidRecord record = bidRecordService.getByBididAndImpid(winNoticeRequest.getBidImpId(), winNoticeRequest.getImpId());
+            if (null != record) {
+                callbackRecord.setMediaid(record.getMediaid());
+                callbackRecord.setPadplacementid(record.getPadplacementid());
+                callbackRecord.setMaterialid(record.getMaterialid());
+            }
+
             callbackRecordService.save(callbackRecord);
         } catch (NumberFormatException e) {
             log.error("竞价回调-入库过程异常 request:{}", JSONObject.toJSONString(request), e);

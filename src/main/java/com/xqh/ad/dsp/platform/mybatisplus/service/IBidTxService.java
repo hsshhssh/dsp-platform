@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface IBidTxService {
 
-    public void updateAdListAndSaveRecord(List<TPlatformAdplacement> adplacementList, TBidRecord tBidRecord);
+    public void updateAdListAndSaveRecord(List<TPlatformAdplacement> adplacementList, List<TBidRecord> recordList);
 }

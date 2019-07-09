@@ -26,7 +26,7 @@ public class BidTxServiceImpl implements IBidTxService {
 
     @Override
     @Transactional
-    public void updateAdListAndSaveRecord(List<TPlatformAdplacement> adplacementList, TBidRecord tBidRecord) {
+    public void updateAdListAndSaveRecord(List<TPlatformAdplacement> adplacementList, List<TBidRecord> recordList) {
         for (TPlatformAdplacement adplacement : adplacementList) {
             UpdateWrapper<TPlatformAdplacement> updateWrapper = new UpdateWrapper<>();
             updateWrapper.eq("pmediaid", adplacement.getPmediaid());
@@ -37,6 +37,8 @@ public class BidTxServiceImpl implements IBidTxService {
             adplacementMapper.update(updateEntity, updateWrapper);
         }
 
-        recordMapper.insert(tBidRecord);
+        for (TBidRecord bidRecord : recordList) {
+            recordMapper.insert(bidRecord);
+        }
     }
 }

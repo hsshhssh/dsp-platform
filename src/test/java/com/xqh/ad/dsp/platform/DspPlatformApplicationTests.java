@@ -5,8 +5,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Sets;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformAdplacement;
+import com.xqh.ad.dsp.platform.mybatisplus.mapper.TBidRecordMapper;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformAdplacementService;
+import com.xqh.ad.dsp.platform.scheduled.OdsBidScheduled;
 import com.xqh.ad.dsp.platform.service.RuanGaoBidService;
+import com.xqh.ad.dsp.platform.utils.CommonUtils;
 import com.xqh.ad.dsp.platform.utils.common.MybatisPlusHelper;
 import com.xqh.ad.dsp.platform.utils.enums.PMediaEnum;
 import com.xqh.ad.dsp.platform.utils.ruangao.AdplacementModel;
@@ -16,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RunWith(SpringRunner.class)
@@ -27,6 +32,33 @@ public class DspPlatformApplicationTests {
     private RuanGaoBidService ruanGaoBidService;
     @Autowired
     private ITPlatformAdplacementService adplacementService;
+    @Autowired
+    private TBidRecordMapper tBidRecordMapper;
+    @Autowired
+    private OdsBidScheduled odsBidScheduled;
+
+    @Test
+    public void odsBidScheduledTest() {
+        odsBidScheduled.odsBidScheduled();
+    }
+
+    @Test
+    public void bidRecordGroupByTest() {
+        LocalDateTime startDate = CommonUtils.getZeroHourTime(-1);
+        LocalDateTime endDate = CommonUtils.getZeroHourTime(0);
+
+        //QueryWrapper<TBidRecord> wrapper = new QueryWrapper<>();
+        //wrapper.select("mediaid", "count(*) as count");
+        //wrapper.ge("create_time", startDate);
+        //wrapper.lt("create_time", endDate);
+        //wrapper.groupBy("mediaid");
+        //System.out.println(wrapper.getSqlSegment());
+        //List<Map<String, Object>> maps = tBidRecordMapper.selectMaps(wrapper);
+        //System.out.println(maps);
+
+        List<Map<String, Object>> pmediaid = tBidRecordMapper.countGroupBy("mediaid", startDate, endDate);
+        System.out.println(pmediaid);
+    }
 
     @Test
     public void getAdListTest() {

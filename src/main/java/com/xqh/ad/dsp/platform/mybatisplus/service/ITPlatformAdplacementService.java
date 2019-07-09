@@ -1,10 +1,7 @@
 package com.xqh.ad.dsp.platform.mybatisplus.service;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.xqh.ad.dsp.platform.model.AdplacementListDTO;
-import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformAdplacement;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformAdplacement;
 import com.xqh.ad.dsp.platform.utils.enums.PMediaEnum;
 
 import java.util.List;
@@ -23,4 +20,6 @@ public interface ITPlatformAdplacementService extends IService<TPlatformAdplacem
     public Set<String> selectNotInAdplacement(Set<String> adplacementIdList, PMediaEnum pMediaEnum);
 
     public void insertList(List<TPlatformAdplacement> list);
+
+    TPlatformAdplacement selectByAdplacementId(Integer pmediaid, String adplacementid);
 }
