@@ -160,7 +160,7 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
             bid.setAdm(material.getAdm());
             bid.setCrid(material.getCrid());
             bid.setAdtype(material.getAdtype());
-            bid.setExt(material.getExt());
+            bid.setExt(getExt(material.getExt()));
             bidList.add(bid);
 
             requestRecordModel.setImpid(imp.getId());
@@ -170,6 +170,14 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
         }
 
         return seatbid;
+    }
+
+    private Object getExt(String ext) {
+        try {
+            return JSONObject.parseObject(ext);
+        } catch (Exception e) {
+            return ext;
+        }
     }
 
     /**
