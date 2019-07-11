@@ -15,6 +15,7 @@ import com.xqh.ad.dsp.platform.mybatisplus.service.ITCallbackRecordService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformAdplacementService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformMaterialService;
 import com.xqh.ad.dsp.platform.service.RuanGaoBidService;
+import com.xqh.ad.dsp.platform.utils.CommonUtils;
 import com.xqh.ad.dsp.platform.utils.SeqNoUtils;
 import com.xqh.ad.dsp.platform.utils.WinNoticeUtils;
 import com.xqh.ad.dsp.platform.utils.enums.PAdplacementStatusEnum;
@@ -160,7 +161,7 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
             bid.setAdm(material.getAdm());
             bid.setCrid(material.getCrid());
             bid.setAdtype(material.getAdtype());
-            bid.setExt(getExt(material.getExt()));
+            bid.setExt(CommonUtils.strToObj(material.getExt()));
             bidList.add(bid);
 
             requestRecordModel.setImpid(imp.getId());
@@ -172,13 +173,6 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
         return seatbid;
     }
 
-    private Object getExt(String ext) {
-        try {
-            return JSONObject.parseObject(ext);
-        } catch (Exception e) {
-            return ext;
-        }
-    }
 
     /**
      * 获取

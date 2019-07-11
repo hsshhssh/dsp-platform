@@ -1,5 +1,7 @@
 package com.xqh.ad.dsp.platform.utils;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -68,5 +70,18 @@ public class CommonUtils {
     public static String localDateTimeToStr(LocalDateTime localDateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return localDateTime.format(formatter);
+    }
+
+    /**
+     * str to Obj
+     * @param ext
+     * @return
+     */
+    public static Object strToObj(String ext) {
+        try {
+            return JSONObject.parseObject(ext);
+        } catch (Exception e) {
+            return ext;
+        }
     }
 }

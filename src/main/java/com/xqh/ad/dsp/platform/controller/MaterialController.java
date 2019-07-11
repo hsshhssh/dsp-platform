@@ -10,6 +10,7 @@ import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformAdplacement;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformMaterial;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformAdplacementService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformMaterialService;
+import com.xqh.ad.dsp.platform.utils.CommonUtils;
 import com.xqh.ad.dsp.platform.utils.SeqNoUtils;
 import com.xqh.ad.dsp.platform.utils.common.MybatisPlusHelper;
 import com.xqh.ad.dsp.platform.utils.common.PageResult;
@@ -79,7 +80,7 @@ public class MaterialController {
             respJson.put("price", material.getPrice());
             respJson.put("crid", material.getCrid());
             respJson.put("adtype", material.getAdtype());
-            respJson.put("ext", material.getExt());
+            respJson.put("ext", CommonUtils.strToObj(material.getExt()));
             respJson.put("adm", JSONObject.parseObject(material.getAdm()));
         } else {
             JSONObject adm = new JSONObject();
