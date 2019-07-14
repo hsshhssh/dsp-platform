@@ -28,20 +28,19 @@ public class GetCityByIpServiceImpl {
         }
         try {
             Request request = new Request.Builder()
-                    .url("http://ip.taobao.com/service/getIpInfo.php?ip=" + ip.trim())
+                    .url("http://restapi.amap.com/v3/ip?key=2e5d5fbd6a3e91505526cde0734f6c36&ip=" + ip.trim())
                     .addHeader("User-Agent","Mozilla/4.0 (compatible; MSIE 7.0; Windows 7)")
                     .get()
                     .build();
             Response response = okHttpClient.newCall(request).execute();
             if (Objects.equals(200, response.code())) {
                 JSONObject result = JSONObject.parseObject(response.body().string());
-                if (Objects.equals(result.getInteger("code"), 0)) {
-                    return result.getJSONObject("data").getString("city");
-                }
+                return result.getString("city");
+
             }
             log.error("通过ip获取城市失败 ip:{} response:{}", response.body().string());
             return "";
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("通过ip获取城市异常 ip:{}", ip ,e);
             return "";
         }
