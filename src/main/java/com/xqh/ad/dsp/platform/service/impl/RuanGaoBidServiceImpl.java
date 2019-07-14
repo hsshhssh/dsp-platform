@@ -46,7 +46,7 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
 
     @Resource
     private RuanGaoConfig ruanGaoConfig;
-    @Resource
+    @Resource(name = "okHttpClient10")
     private OkHttpClient okHttpClient;
     @Resource
     private ITPlatformAdplacementService adplacementService;

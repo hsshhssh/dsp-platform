@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.openrtb.OpenRtb;
 import com.google.openrtb.json.OpenRtbJsonFactory;
 import com.googlecode.protobuf.format.JsonFormat;
+import com.xqh.ad.dsp.platform.service.impl.GetCityByIpServiceImpl;
 import com.xqh.ad.dsp.platform.utils.WinNoticeUtils;
 import com.xqh.ad.dsp.platform.utils.zkconf.TestConfig;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,8 @@ public class TestController {
 
     @Autowired
     private TestConfig testConfig;
+    @Autowired
+    private GetCityByIpServiceImpl cityByIpService;
 
     @PostMapping("publish")
     public String publish(@RequestBody String requestJson) {
@@ -54,6 +57,12 @@ public class TestController {
         WinNoticeUtils.WinNoticeRequest winNoticeRequest = WinNoticeUtils.getByRequest(request);
         log.info("竞价成功回调-request:{}", JSONObject.toJSONString(winNoticeRequest));
         return "ok";
+    }
+
+
+    @GetMapping("getCityByIp")
+    public String getCityByIp(String ip) {
+        return getCityByIp(ip);
     }
 
 }
