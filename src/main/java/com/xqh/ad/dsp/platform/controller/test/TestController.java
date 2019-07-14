@@ -62,7 +62,7 @@ public class TestController {
 
     @GetMapping("getCityByIp")
     public String getCityByIp(String ip) {
-        return getCityByIp(ip);
+        return cityByIpService.getCityByIp(ip);
     }
 
 }
