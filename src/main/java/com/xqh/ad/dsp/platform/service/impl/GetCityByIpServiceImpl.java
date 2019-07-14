@@ -35,8 +35,10 @@ public class GetCityByIpServiceImpl {
             Response response = okHttpClient.newCall(request).execute();
             if (Objects.equals(200, response.code())) {
                 JSONObject result = JSONObject.parseObject(response.body().string());
-                return result.getString("city");
-
+                String city = result.getString("city");
+                if(StringUtils.isNotBlank(city)) {
+                    return city;
+                }
             }
             log.error("通过ip获取城市失败 ip:{} response:{}", response.body().string());
             return "";
