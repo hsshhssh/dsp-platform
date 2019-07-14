@@ -28,7 +28,7 @@ public class GetCityByIpServiceImpl {
         }
         try {
             Request request = new Request.Builder()
-                    .url("http://ip.taobao.com/service/getIpInfo.php?ip=119.123.206.66")
+                    .url("http://ip.taobao.com/service/getIpInfo.php?ip=" + ip.trim())
                     .addHeader("User-Agent","Mozilla/4.0 (compatible; MSIE 7.0; Windows 7)")
                     .get()
                     .build();
