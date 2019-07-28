@@ -133,11 +133,10 @@ public class AdplacementMaterialController {
         if (saveDTO.getId() != null) {
             // 更新
             strategy.setId(saveDTO.getId());
-            // 状态为禁用
-            strategy.setStatus(UUID.randomUUID().toString());
             adplacementMaterialService.updateById(strategy);
         } else {
-            // 新增
+            // 新增 状态为禁用
+            strategy.setStatus(UUID.randomUUID().toString());
             adplacementMaterialService.save(strategy);
         }
         return new ResponseBean<>("操作成功");
