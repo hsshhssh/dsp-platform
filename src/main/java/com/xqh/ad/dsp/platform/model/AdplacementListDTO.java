@@ -24,4 +24,7 @@ public class AdplacementListDTO extends PageDTO {
     // 媒体名称
     private String medianame_like;
 
+    // 广告位名称
+    private String adplacementname_like;
+
 }

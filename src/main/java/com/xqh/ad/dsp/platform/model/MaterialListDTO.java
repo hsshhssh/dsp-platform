@@ -15,4 +15,6 @@ public class MaterialListDTO extends PageDTO {
     private String adplacementid;
     // 创意id
     private String crid;
+
+    private String name_like;
 }

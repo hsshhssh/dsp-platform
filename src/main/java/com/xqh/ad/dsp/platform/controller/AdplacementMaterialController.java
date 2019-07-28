@@ -3,6 +3,8 @@ package com.xqh.ad.dsp.platform.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.xqh.ad.dsp.platform.model.AdpMaterialListDTO;
 import com.xqh.ad.dsp.platform.model.AdplacementMaterialSaveDTO;
 import com.xqh.ad.dsp.platform.model.AdpMaterialVO;
@@ -18,11 +20,13 @@ import com.xqh.ad.dsp.platform.utils.common.PageResult;
 import com.xqh.ad.dsp.platform.utils.common.ResponseBean;
 import com.xqh.ad.dsp.platform.utils.common.ResponseEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -66,8 +70,32 @@ public class AdplacementMaterialController {
 
         AdpMaterialVO vo = new AdpMaterialVO(adplacementMaterial);
 
+        vo.setHoursList(Splitter.on(",").omitEmptyStrings().splitToList(vo.getHours()));
+        vo.setCityList(Splitter.on(",").omitEmptyStrings().splitToList(vo.getCity()));
+        vo.setNetworkList(Splitter.on(",").omitEmptyStrings().splitToList(vo.getNetwork()));
+        vo.setTagList(Splitter.on(",").omitEmptyStrings().splitToList(vo.getTag()));
+
+
         // TODO 广告位信息 素材信息
         return new ResponseBean<>(vo);
+    }
+
+    @RequestMapping("copy")
+    public ResponseBean<String> copy(String id) {
+        TAdplacementMaterial adplacementMaterial = adplacementMaterialService.getById(Long.valueOf(id));
+        if (null == adplacementMaterial) {
+            return new ResponseBean<>(ResponseEnum.ADPLACEMENT_MATERIAL_NOT_EXIT);
+        }
+
+        TAdplacementMaterial copy = new TAdplacementMaterial();
+        BeanUtils.copyProperties(adplacementMaterial, copy);
+        copy.setId(null);
+        copy.setName("");
+        copy.setStatus(UUID.randomUUID().toString());
+        copy.setCreateTime(LocalDateTime.now());
+        copy.setUpdateTime(LocalDateTime.now());
+        adplacementMaterialService.save(copy);
+        return new ResponseBean<>("操作成功");
     }
 
     @RequestMapping("save")
@@ -89,13 +117,18 @@ public class AdplacementMaterialController {
         strategy.setAdplacementid(adplacement.getAdplacementid());
         strategy.setAdplacementname(adplacement.getAdplacementname());
         strategy.setMediaid(adplacement.getMediaid());
+        strategy.setMedianame(adplacement.getMedianame());
         strategy.setMaterialid(material.getId());
-        strategy.setHours(saveDTO.getHours());
-        strategy.setCity(saveDTO.getCity());
-        strategy.setNetwork(saveDTO.getNetwork());
+        strategy.setMaterialname(material.getName());
+        strategy.setHours(Joiner.on(",").skipNulls().join(saveDTO.getHoursList()));
+        strategy.setCity(Joiner.on(",").skipNulls().join(saveDTO.getCityList()));
+        strategy.setNetwork(Joiner.on(",").skipNulls().join(saveDTO.getNetworkList()));
         strategy.setSex(saveDTO.getSex());
         strategy.setAge(saveDTO.getAge());
-        strategy.setTag(saveDTO.getTag());
+        strategy.setTag(Joiner.on(",").skipNulls().join(saveDTO.getTagList()));
+        strategy.setRemark(saveDTO.getRemark());
+        strategy.setPmoUrl(saveDTO.getPmoUrl());
+        strategy.setCmoUrl(saveDTO.getCmoUrl());
 
         if (saveDTO.getId() != null) {
             // 更新
@@ -104,7 +137,7 @@ public class AdplacementMaterialController {
             strategy.setStatus(UUID.randomUUID().toString());
             adplacementMaterialService.updateById(strategy);
         } else {
-            // 修改
+            // 新增
             adplacementMaterialService.save(strategy);
         }
         return new ResponseBean<>("操作成功");
@@ -175,4 +208,5 @@ public class AdplacementMaterialController {
 
         return new ResponseBean<>("操作成功");
     }
+
 }

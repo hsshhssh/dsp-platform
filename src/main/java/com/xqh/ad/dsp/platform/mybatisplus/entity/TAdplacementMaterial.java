@@ -65,12 +65,24 @@ public class TAdplacementMaterial implements Serializable {
     private Integer mediaid;
 
     /**
+     * 媒体名称
+     */
+    @TableField("medianame")
+    private String medianame;
+
+    /**
      * 素材id
      */
     @TableField("materialid")
     private Long materialid;
 
     /**
+     * 素材名称
+     */
+    @TableField("materialname")
+    private String materialname;
+
+   /**
      * 状态 1=>启动 非1=>暂停
      */
     @TableField("status")
@@ -111,6 +123,24 @@ public class TAdplacementMaterial implements Serializable {
      */
     @TableField("tag")
     private String tag;
+
+    /**
+     * 备注
+     */
+    @TableField("remark")
+    private String remark;
+
+    /**
+     * 曝光监控对象url
+     */
+    @TableField("pmoUrl")
+    private String pmoUrl;
+
+    /**
+     * 点击监控对象url
+     */
+    @TableField("cmoUrl")
+    private String cmoUrl;
 
     /**
      * 创建时间

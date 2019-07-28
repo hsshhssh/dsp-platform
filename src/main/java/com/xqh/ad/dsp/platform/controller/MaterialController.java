@@ -57,30 +57,30 @@ public class MaterialController {
     }
 
     @PostMapping("get")
-    public ResponseBean<JSONObject> get(String padplacementid) {
-        QueryWrapper<TPlatformAdplacement> adQuery = new QueryWrapper<>();
-        adQuery.eq("padplacementid", padplacementid);
-        TPlatformAdplacement adplacement = adplacementService.getOne(adQuery);
-        if (null == adplacement) {
-            return new ResponseBean<>(ResponseEnum.AD_NOT_EXIT);
-        }
+    public ResponseBean<JSONObject> get(String id) {
+        // QueryWrapper<TPlatformAdplacement> adQuery = new QueryWrapper<>();
+        // adQuery.eq("padplacementid", padplacementid);
+        // TPlatformAdplacement adplacement = adplacementService.getOne(adQuery);
+        // if (null == adplacement) {
+        //     return new ResponseBean<>(ResponseEnum.AD_NOT_EXIT);
+        // }
+        //
+        // respJson.put("padplacementid", padplacementid);
+        // respJson.put("pmediaStr", PMediaEnum.getName(adplacement.getPmediaid()));
+        // respJson.put("pmediaid", adplacement.getPmediaid());
+        // respJson.put("adplacementid", adplacement.getAdplacementid());
+        // respJson.put("adplacementname", adplacement.getAdplacementname());
 
         JSONObject respJson = new JSONObject();
-        respJson.put("padplacementid", padplacementid);
-        respJson.put("pmediaStr", PMediaEnum.getName(adplacement.getPmediaid()));
-        respJson.put("pmediaid", adplacement.getPmediaid());
-        respJson.put("adplacementid", adplacement.getAdplacementid());
-        respJson.put("adplacementname", adplacement.getAdplacementname());
-
-        QueryWrapper<TPlatformMaterial> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("padplacementid", padplacementid);
-        TPlatformMaterial material = materialService.getOne(queryWrapper);
+        TPlatformMaterial material = materialService.getById(Long.valueOf(id));
         if (null != material) {
             // 未保存
+            respJson.put("id", Long.valueOf(id));
             respJson.put("price", material.getPrice());
             respJson.put("crid", material.getCrid());
             respJson.put("adtype", material.getAdtype());
             respJson.put("ext", CommonUtils.strToObj(material.getExt()));
+            respJson.put("name", material.getName());
             respJson.put("adm", JSONObject.parseObject(material.getAdm()));
         } else {
             JSONObject adm = new JSONObject();
@@ -104,19 +104,18 @@ public class MaterialController {
 
     @PostMapping("save")
     public ResponseBean<String> save(@RequestBody JSONObject reqJson) {
-        String padplacementid = reqJson.getString("padplacementid");
-        if (StringUtils.isBlank(padplacementid)) {
-            return new ResponseBean<>(ResponseEnum.AD_NOT_EXIT);
-        }
-
-        QueryWrapper<TPlatformMaterial> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("padplacementid", padplacementid);
-        TPlatformMaterial queryMaterial = materialService.getOne(queryWrapper);
+        // String padplacementid = reqJson.getString("padplacementid");
+        // if (StringUtils.isBlank(padplacementid)) {
+        //     return new ResponseBean<>(ResponseEnum.AD_NOT_EXIT);
+        // }
+        //
+        // QueryWrapper<TPlatformMaterial> queryWrapper = new QueryWrapper<>();
+        // queryWrapper.eq("padplacementid", padplacementid);
+        // TPlatformMaterial queryMaterial = materialService.getOne(queryWrapper);
         TPlatformMaterial material = JSONObject.parseObject(reqJson.toJSONString(), TPlatformMaterial.class);
-        if (queryMaterial == null) {
+        if (material.getId() == null) {
             materialService.save(material);
         } else {
-            material.setId(queryMaterial.getId());
             materialService.updateById(material);
         }
         return new ResponseBean<>("保存成功");
