@@ -6,9 +6,12 @@ import com.xqh.ad.dsp.platform.model.BidResponse;
 import com.xqh.ad.dsp.platform.model.BidResponseModel;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TBidRecord;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformAdplacement;
+import com.xqh.ad.dsp.platform.mybatisplus.entity.TTagDeviceRecord;
 import com.xqh.ad.dsp.platform.mybatisplus.service.IBidTxService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformAdplacementService;
+import com.xqh.ad.dsp.platform.mybatisplus.service.ITTagDeviceRecordService;
 import com.xqh.ad.dsp.platform.utils.enums.PMediaEnum;
+import com.xqh.ad.dsp.platform.utils.enums.TagResultEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -27,6 +30,8 @@ public class AsyncUtils {
     private IBidTxService bidTxService;
     @Resource
     private ITPlatformAdplacementService adplacementService;
+    @Resource
+    private ITTagDeviceRecordService recordService;
 
     @Async
     public void handlePublish(String requestJson, BidResponseModel bidResponseModel, PMediaEnum pMediaEnum) {
@@ -71,5 +76,22 @@ public class AsyncUtils {
         }
 
         bidTxService.updateAdListAndSaveRecord(adplacementList, recordList);
+    }
+
+
+    @Async
+    public void handleTdRecord(Long tagId, Integer type, String deviceId, boolean result) {
+
+        TTagDeviceRecord record = new TTagDeviceRecord();
+        record.setTagid(tagId);
+        record.setType(type);
+        record.setDeviceId(deviceId);
+        record.setResult(result ? TagResultEnum.YES.getCode() : TagResultEnum.NO.getCode());
+
+        try {
+            recordService.save(record);
+        } catch (Exception e) {
+            log.error("异步插入td记录-失败 record:{}", JSONObject.toJSONString(record));
+        }
     }
 }

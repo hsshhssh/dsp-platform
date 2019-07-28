@@ -1,6 +1,5 @@
 package com.xqh.ad.dsp.platform.mybatisplus.entity;
 
-import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
@@ -11,14 +10,14 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 素材表
+ * 投放计划表
  * </p>
  *
  * @author K神带你飞
- * @since 2019-05-02
+ * @since 2019-07-27
  */
 @Data
-public class TPlatformMaterial implements Serializable {
+public class TAdplacementMaterial implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,7 +28,7 @@ public class TPlatformMaterial implements Serializable {
     private Long id;
 
     /**
-     * 素材名称
+     * 计划名称
      */
     @TableField("name")
     private String name;
@@ -58,35 +57,60 @@ public class TPlatformMaterial implements Serializable {
     @TableField("adplacementid")
     private String adplacementid;
 
-    /**
-     * 价格
-     */
-    @TableField("price")
-    private BigDecimal price;
 
     /**
-     * 广告回复内容
+     * 媒体id
      */
-    @TableField("adm")
-    private String adm;
+    @TableField("mediaid")
+    private Integer mediaid;
 
     /**
-     * 创意id
+     * 素材id
      */
-    @TableField("crid")
-    private String crid;
+    @TableField("materialid")
+    private Long materialid;
 
     /**
-     * 素材类型
+     * 状态 1=>启动 非1=>暂停
      */
-    @TableField("adtype")
-    private String adtype;
+    @TableField("status")
+    private String status;
 
     /**
-     * 扩展字段
+     * 投放时间
      */
-    @TableField("ext")
-    private String ext;
+    @TableField("hours")
+    private String hours;
+
+    /**
+     * 投放地区
+     */
+    @TableField("city")
+    private String city;
+
+    /**
+     * 网络状态
+     */
+    @TableField("network")
+    private String network;
+
+    /**
+     * 用户性别(弃用)
+     */
+    @TableField("sex")
+    private String sex;
+
+    /**
+     * 用户年龄(弃用)
+     */
+    @TableField("age")
+    private String age;
+
+    /**
+     * 自定义人群
+     */
+    @TableField("tag")
+    private String tag;
 
     /**
      * 创建时间
@@ -99,6 +123,4 @@ public class TPlatformMaterial implements Serializable {
      */
     @TableField("update_time")
     private LocalDateTime updateTime;
-
-
 }

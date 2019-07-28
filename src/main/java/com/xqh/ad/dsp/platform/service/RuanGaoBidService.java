@@ -1,6 +1,7 @@
 package com.xqh.ad.dsp.platform.service;
 
 import com.google.openrtb.OpenRtb;
+import com.xqh.ad.dsp.platform.model.BidRequest;
 import com.xqh.ad.dsp.platform.model.BidResponseModel;
 import com.xqh.ad.dsp.platform.utils.WinNoticeUtils;
 import com.xqh.ad.dsp.platform.utils.ruangao.AdplacementModel;
@@ -23,7 +24,7 @@ public interface RuanGaoBidService {
      * @param request
      * @return
      */
-    public BidResponseModel getBidResponse(OpenRtb.BidRequest request);
+    public BidResponseModel getBidResponse(BidRequest request);
 
 
     /**

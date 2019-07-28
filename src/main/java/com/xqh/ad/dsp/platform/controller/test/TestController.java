@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.openrtb.OpenRtb;
 import com.google.openrtb.json.OpenRtbJsonFactory;
 import com.googlecode.protobuf.format.JsonFormat;
-import com.xqh.ad.dsp.platform.service.impl.GetCityByIpServiceImpl;
+import com.xqh.ad.dsp.platform.service.impl.GetCityByIpService;
 import com.xqh.ad.dsp.platform.utils.WinNoticeUtils;
 import com.xqh.ad.dsp.platform.utils.zkconf.TestConfig;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class TestController {
     @Autowired
     private TestConfig testConfig;
     @Autowired
-    private GetCityByIpServiceImpl cityByIpService;
+    private GetCityByIpService cityByIpService;
 
     @PostMapping("publish")
     public String publish(@RequestBody String requestJson) {

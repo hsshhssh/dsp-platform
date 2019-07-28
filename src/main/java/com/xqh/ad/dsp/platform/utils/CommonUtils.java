@@ -16,6 +16,31 @@ import java.util.Date;
 public class CommonUtils {
 
     /**
+     * 启动状态
+     */
+    public static final String ENABLE_STATUS = "1";
+
+    /**
+     * 联网方式
+     */
+    public static final int NETWORK_NONE = 0;
+    public static final int NETWORK_WIFI = 1;
+    public static final int NETWORK_MOBILE = 2;
+
+    public static void main(String[] args) {
+        System.out.println(getHour());
+    }
+
+    /**
+     * 获取当前小时
+     * @return
+     */
+    public static int getHour() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    /**
      * 取得零点时间
      */
     public static LocalDateTime getZeroHourTime(int day)

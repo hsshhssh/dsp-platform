@@ -3,6 +3,7 @@ package com.xqh.ad.dsp.platform.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.google.openrtb.OpenRtb;
 import com.google.openrtb.json.OpenRtbJsonFactory;
+import com.xqh.ad.dsp.platform.model.BidRequest;
 import com.xqh.ad.dsp.platform.model.BidResponseModel;
 import com.xqh.ad.dsp.platform.service.RuanGaoBidService;
 import com.xqh.ad.dsp.platform.utils.AsyncUtils;
@@ -50,10 +51,10 @@ public class RuangaoController {
      */
     @PostMapping("publish")
     public String publish(@RequestBody String requestJson) {
-        OpenRtb.BidRequest bidRequest;
+        BidRequest bidRequest;
         try {
-            bidRequest = OpenRtbJsonFactory.create().newReader().readBidRequest(requestJson);
-        } catch (IOException e) {
+            bidRequest = JSONObject.parseObject(requestJson, BidRequest.class);
+        } catch (Exception e) {
             e.printStackTrace();
             return "解析请求参数异常";
         }

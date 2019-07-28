@@ -4,13 +4,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.openrtb.OpenRtb;
+import com.xqh.ad.dsp.platform.model.BidRequest;
 import com.xqh.ad.dsp.platform.model.BidResponse;
 import com.xqh.ad.dsp.platform.model.BidResponseModel;
+import com.xqh.ad.dsp.platform.mybatisplus.entity.TAdplacementMaterial;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TCallbackRecord;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformAdplacement;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformMaterial;
-import com.xqh.ad.dsp.platform.mybatisplus.service.ITBidRecordService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITCallbackRecordService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformAdplacementService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformMaterialService;
@@ -26,6 +26,7 @@ import com.xqh.ad.dsp.platform.utils.ruangao.PriceDecoder;
 import com.xqh.ad.dsp.platform.utils.ruangao.RuanGaoConfig;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -56,6 +57,10 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
     private ITPlatformMaterialService materialService;
     @Resource
     private ITCallbackRecordService callbackRecordService;
+    @Resource
+    private MaterialStrategyService materialStrategyService;
+    @Resource
+    private GetCityByIpService getCityByIpService;
 
     /**
      * 同步广告位
@@ -97,7 +102,7 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
      * @return
      */
     @Override
-    public BidResponseModel getBidResponse(OpenRtb.BidRequest request) {
+    public BidResponseModel getBidResponse(BidRequest request) {
         BidResponseModel bidResponseModel = new BidResponseModel();
 
         // requestRecordModelList
@@ -122,48 +127,84 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
         return bidResponseModel;
     }
 
-    public List<Map<String, List<BidResponse.Bid>>> getSeatbid(OpenRtb.BidRequest request, List<BidResponseModel.RequestRecordModel> requestRecordModelList) {
+    public List<Map<String, List<BidResponse.Bid>>> getSeatbid(BidRequest request, List<BidResponseModel.RequestRecordModel> requestRecordModelList) {
+
+        // 设置返回值
         List<BidResponse.Bid> bidList = Lists.newArrayList();
         List<Map<String, List<BidResponse.Bid>>> seatbid = Lists.newArrayList();
         Map<String, List<BidResponse.Bid>> bidMap = Maps.newHashMap();
         bidMap.put("bid", bidList);
         seatbid.add(bidMap);
-        if (CollectionUtils.isEmpty(request.getImpList())) {
+
+        // 判断竞价广告
+        if (CollectionUtils.isEmpty(request.getImp())) {
             return seatbid;
         }
 
-        List<String> adplacementidList = request.getImpList().stream().map(OpenRtb.BidRequest.Imp::getTagid).collect(Collectors.toList());
-        Map<String, TPlatformMaterial> materialMap = materialService.getByAdplacementid(adplacementidList, PMediaEnum.RUAN_GAO);
+        // 判断device
+        BidRequest.Device device = request.getDevice();
+        if (null == device) {
+            return seatbid;
+        }
 
-        for (OpenRtb.BidRequest.Imp imp : request.getImpList()) {
+        // 获取广告位策略
+        Map<String, TAdplacementMaterial> strategyMap = materialStrategyService.getStrategy(request, PMediaEnum.RUAN_GAO);
+        if (CollectionUtils.isEmpty(strategyMap)) {
+            log.error("软告竞价-无可用策略 request:{}", JSONObject.toJSONString(request));
+            return seatbid;
+        }
+
+        // 获取城市
+        String cityCode = getCityByIpService.getCityByIp(request.getDevice().getIp());
+        if (StringUtils.isBlank(cityCode)) {
+            log.error("软告竞价-获取成功失败 ip:{} cityCode:{}", request.getDevice().getIp());
+            return seatbid;
+        }
+
+        // 获取当前时间
+        int hour = CommonUtils.getHour();
+
+        // 设备联网方式，0=无;1=wifi;2 =2/3/4G
+        int network = device.getConnectiontype() == null ? CommonUtils.NETWORK_NONE : device.getConnectiontype();
+
+        for (BidRequest.Imp imp : request.getImp()) {
             // requestRecordModel
             BidResponseModel.RequestRecordModel requestRecordModel = new BidResponseModel.RequestRecordModel();
             requestRecordModel.setPmediaid(PMediaEnum.RUAN_GAO.getCode());
 
-            TPlatformMaterial material = materialMap.get(imp.getTagid());
-            if (material == null) {
+            // 选择策略
+            TAdplacementMaterial strategy = strategyMap.get(imp.getTagid());
+            if (strategy == null) {
                 requestRecordModel.setImpid(imp.getId());
                 requestRecordModel.setAdplacementid(imp.getTagid());
                 requestRecordModelList.add(requestRecordModel);
-                log.error("软告竞价-未上传素材 adplacementid:{}", imp.getTagid());
+                log.error("软告竞价-广告位无可用策略 adplacementid:{}", imp.getTagid());
                 continue;
             }
 
-            BidResponse.Bid bid = new BidResponse.Bid();
-            // 请求ID
-            bid.setId(request.getId());
-            // 曝光id
-            bid.setImpid(imp.getId());
-            // 价格
-            bid.setPrice(material.getPrice().floatValue());
-            // 竞价成功回调地址
-            bid.setNurl(ruanGaoConfig.getNurl().trim());
-            bid.setAdm(material.getAdm());
-            bid.setCrid(material.getCrid());
-            bid.setAdtype(material.getAdtype());
-            bid.setExt(CommonUtils.strToObj(material.getExt()));
-            bidList.add(bid);
+            // 根据策略过滤投放计划
+            boolean baseResult = materialStrategyService.filterBase(strategy, cityCode, String.valueOf(network), String.valueOf(hour));
+            if (!baseResult) {
+                log.info("软告竞价-基础校验不通过 adplacementid:{}", imp.getTagid());
+                continue;
 
+            }
+
+            // 过滤标签
+            boolean tagReslut = materialStrategyService.filerTDTag(strategy, request.getDevice().getDpid(), request.getDevice().getId());
+            if (!tagReslut) {
+                log.info("软告竞价-标签校验不通过 adplacementid:{}", imp.getTagid());
+                continue;
+            }
+
+
+            // 获取素材
+            TPlatformMaterial material = materialService.getById(strategy.getMaterialid());
+
+            // 构造响应bid对象
+            bidList.add(getBid(request, imp, material));
+
+            // 构造请求请求记录参数
             requestRecordModel.setImpid(imp.getId());
             requestRecordModel.setAdplacementid(imp.getTagid());
             requestRecordModel.setMaterialid(String.valueOf(material.getId()));
@@ -171,6 +212,24 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
         }
 
         return seatbid;
+    }
+
+    private BidResponse.Bid getBid(BidRequest request, BidRequest.Imp imp,  TPlatformMaterial material) {
+        BidResponse.Bid bid = new BidResponse.Bid();
+        // 请求ID
+        bid.setId(request.getId());
+        // 曝光id
+        bid.setImpid(imp.getId());
+        // 价格
+        bid.setPrice(material.getPrice().floatValue());
+        // 竞价成功回调地址
+        bid.setNurl(ruanGaoConfig.getNurl().trim());
+        bid.setAdm(material.getAdm());
+        bid.setCrid(material.getCrid());
+        bid.setAdtype(material.getAdtype());
+        bid.setExt(CommonUtils.strToObj(material.getExt()));
+
+        return bid;
     }
 
 

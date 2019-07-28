@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class MaterialVO {
 
     private Long id;
+    private String name;
     private String padplacementid;
     private Integer pmediaid;
     private String adplacementid;
