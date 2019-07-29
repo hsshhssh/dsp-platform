@@ -126,47 +126,47 @@ public class MaterialStrategyService {
                 return false;
             }
 
-            // 白名单
-            if (Objects.equals(TagTypeEnum.WHILE.getCode(), tag.getTagType())
-                    && tagRecord != null) {
-                return true;
-            }
+            // // 白名单
+            // if (Objects.equals(TagTypeEnum.WHILE.getCode(), tag.getTagType())
+            //         && tagRecord != null) {
+            //     return true;
+            // }
 
             // td 记录
-            if (Objects.equals(TagIsTdEnum.YES.getCode(), tag.getIsTd())) {
-                if (tagRecord != null && Objects.equals(tagRecord.getResult(), TagResultEnum.YES.getCode())) {
-                    log.info("标签过滤-本地记录匹配 tag:{}", tagRecord.getId());
-                    return true;
-                }
-                if (tagRecord == null) {
-                    noRecordTagList.add(tag);
-                }
-            }
+            // if (Objects.equals(TagIsTdEnum.YES.getCode(), tag.getIsTd())) {
+            //     if (tagRecord != null && Objects.equals(tagRecord.getResult(), TagResultEnum.YES.getCode())) {
+            //         log.info("标签过滤-本地记录匹配 tag:{}", tagRecord.getId());
+            //         return true;
+            //     }
+            //     if (tagRecord == null) {
+            //         noRecordTagList.add(tag);
+            //     }
+            // }
 
         }
 
         // 请求TD
-        for (TTag tag : noRecordTagList) {
-            boolean tdResult;
-            try {
-                tdResult = tdService.getTDResult(tag, deviceTypeEnum.getTdCode(), deviceId);
-            } catch (Exception e) {
-                log.error("标签过滤-请求td异常 tagId:{}", tag.getId(), e);
-                return false;
-            }
-
-            // 异步记录请求记录
-            asyncUtils.handleTdRecord(tag.getId(), deviceTypeEnum.getTdCode(), deviceId, tdResult);
-
-            // 存在一个成功即可返回
-            if (tdResult) {
-                log.info("标签过滤-请求TD成功 tagId:{}", tag.getId());
-                return true;
-            }
-
-        }
+        // for (TTag tag : noRecordTagList) {
+        //     boolean tdResult;
+        //     try {
+        //         tdResult = tdService.getTDResult(tag, deviceTypeEnum.getTdCode(), deviceId);
+        //     } catch (Exception e) {
+        //         log.error("标签过滤-请求td异常 tagId:{}", tag.getId(), e);
+        //         return false;
+        //     }
+        //
+        //     // 异步记录请求记录
+        //     asyncUtils.handleTdRecord(tag.getId(), deviceTypeEnum.getTdCode(), deviceId, tdResult);
+        //
+        //     // 存在一个成功即可返回
+        //     if (tdResult) {
+        //         log.info("标签过滤-请求TD成功 tagId:{}", tag.getId());
+        //         return true;
+        //     }
+        //
+        // }
         // 所有标签都不满足
-        return false;
+        return true;
     }
 
 }
