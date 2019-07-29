@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -14,6 +16,7 @@ import java.io.Serializable;
  * @author K神带你飞
  * @since 2019-07-27
  */
+@Data
 public class TTag implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,6 +40,20 @@ public class TTag implements Serializable {
     private String tdKey;
 
     /**
+     * 1白名单 2黑名单
+     */
+    @TableField("tagType")
+    private Integer tagType;
+
+
+    /**
+     * 是否请求TD 1是 2否
+     */
+    @TableField("isTd")
+    private Integer isTd;
+
+
+    /**
      * 创建时间
      */
     @TableField("create_time")
@@ -49,54 +66,4 @@ public class TTag implements Serializable {
     private LocalDateTime updateTime;
 
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTdKey() {
-        return tdKey;
-    }
-
-    public void setTdKey(String tdKey) {
-        this.tdKey = tdKey;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "TTag{" +
-        "id=" + id +
-        ", name=" + name +
-        ", tdKey=" + tdKey +
-        ", createTime=" + createTime +
-        ", updateTime=" + updateTime +
-        "}";
-    }
 }

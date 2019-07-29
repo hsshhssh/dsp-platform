@@ -12,9 +12,7 @@ import com.xqh.ad.dsp.platform.mybatisplus.service.ITTagDeviceRecordService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITTagService;
 import com.xqh.ad.dsp.platform.utils.AsyncUtils;
 import com.xqh.ad.dsp.platform.utils.CommonUtils;
-import com.xqh.ad.dsp.platform.utils.enums.PMediaEnum;
-import com.xqh.ad.dsp.platform.utils.enums.TDDeviceTypeEnum;
-import com.xqh.ad.dsp.platform.utils.enums.TagResultEnum;
+import com.xqh.ad.dsp.platform.utils.enums.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -99,10 +97,13 @@ public class MaterialStrategyService {
     public boolean filerTDTag(TAdplacementMaterial strategy, String deviceType, String deviceId) {
 
         // 没有配置标签 => 条件不满足
-        List<String> tagList = Splitter.on(",").omitEmptyStrings().splitToList(strategy.getTag());
-        if (CollectionUtils.isEmpty(tagList)) {
+        List<String> tagIdList = Splitter.on(",").omitEmptyStrings().splitToList(strategy.getTag());
+        if (CollectionUtils.isEmpty(tagIdList)) {
             return false;
         }
+        QueryWrapper<TTag> tagQuery = new QueryWrapper<>();
+        tagQuery.in("id", tagIdList.stream().map(Long::valueOf).collect(Collectors.toList()));
+        List<TTag> tagList = tagService.list();
 
         // 仅支持安卓
         TDDeviceTypeEnum deviceTypeEnum = TDDeviceTypeEnum.getByCode(deviceType);
@@ -111,42 +112,55 @@ public class MaterialStrategyService {
         }
 
         // 查询本地匹配记录
-        List<Long> noRecordTagList = Lists.newArrayList();
-        for (String tagId : tagList) {
+        List<TTag> noRecordTagList = Lists.newArrayList();
+        for (TTag tag : tagList) {
             QueryWrapper<TTagDeviceRecord> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("deviceId", deviceId);
             queryWrapper.eq("type", deviceTypeEnum.getTdCode());
-            queryWrapper.eq("tagid", Integer.valueOf(tagId));
+            queryWrapper.eq("tagid", tag.getId());
             TTagDeviceRecord tagRecord = tagDeviceRecordService.getOne(queryWrapper);
 
-            // 没有tag记录的设备id => 请求TD
-            if (tagRecord == null) {
-                noRecordTagList.add(Long.valueOf(tagId));
+            // 黑名单
+            if (Objects.equals(TagTypeEnum.BLACK.getCode(), tag.getTagType())
+                    && tagRecord != null) {
+                return false;
             }
 
-            if (tagRecord != null && Objects.equals(tagRecord.getResult(), TagResultEnum.YES.getCode())) {
-                log.info("标签过滤-本地记录匹配 tag:{}", tagRecord.getId());
+            // 白名单
+            if (Objects.equals(TagTypeEnum.WHILE.getCode(), tag.getTagType())
+                    && tagRecord != null) {
                 return true;
             }
+
+            // td 记录
+            if (Objects.equals(TagIsTdEnum.YES.getCode(), tag.getIsTd())) {
+                if (tagRecord != null && Objects.equals(tagRecord.getResult(), TagResultEnum.YES.getCode())) {
+                    log.info("标签过滤-本地记录匹配 tag:{}", tagRecord.getId());
+                    return true;
+                }
+                if (tagRecord == null) {
+                    noRecordTagList.add(tag);
+                }
+            }
+
         }
 
         // 请求TD
-        for (Long tagId : noRecordTagList) {
-            TTag tag = tagService.getById(tagId);
+        for (TTag tag : noRecordTagList) {
             boolean tdResult;
             try {
                 tdResult = tdService.getTDResult(tag, deviceTypeEnum.getTdCode(), deviceId);
             } catch (Exception e) {
-                log.error("标签过滤-请求td异常 tagId:{}", tagId, e);
+                log.error("标签过滤-请求td异常 tagId:{}", tag.getId(), e);
                 return false;
             }
 
             // 异步记录请求记录
-            asyncUtils.handleTdRecord(tagId, deviceTypeEnum.getTdCode(), deviceId, tdResult);
+            asyncUtils.handleTdRecord(tag.getId(), deviceTypeEnum.getTdCode(), deviceId, tdResult);
 
             // 存在一个成功即可返回
             if (tdResult) {
-                log.info("标签过滤-请求TD成功 tagId:{}", tagId);
+                log.info("标签过滤-请求TD成功 tagId:{}", tag.getId());
                 return true;
             }
 

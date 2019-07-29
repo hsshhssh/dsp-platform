@@ -3,6 +3,7 @@ package com.xqh.ad.dsp.platform.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xqh.ad.dsp.platform.model.TTagVO;
 import com.xqh.ad.dsp.platform.model.TagListDTO;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TTag;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITTagService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.stream.Collectors;
 
 /**
  * Created by samson.huang on 2019/7/28
@@ -28,31 +30,37 @@ public class TagController {
     private ITTagService tagService;
 
     @RequestMapping("list")
-    public ResponseBean<PageResult<TTag>> list(@RequestBody TagListDTO listDTO) {
+    public ResponseBean<PageResult<TTagVO>> list(@RequestBody TagListDTO listDTO) {
 
         Page<TTag> pageQuery = new Page<>(listDTO.getPage(), listDTO.getLimit());
         QueryWrapper<TTag> queryWrapper = MybatisPlusHelper.buildQueryWrapper(listDTO, TTag.class);
         queryWrapper.orderByDesc("id");
 
         IPage<TTag> page = tagService.page(pageQuery, queryWrapper);
-        PageResult<TTag> pageResult = new PageResult<>();
+        PageResult<TTagVO> pageResult = new PageResult<>();
         pageResult.setTotal(page.getTotal());
-        pageResult.setList(page.getRecords());
+        pageResult.setList(page.getRecords().stream().map(TTagVO::new).collect(Collectors.toList()));
 
         return new ResponseBean<>(pageResult);
     }
 
     @RequestMapping("get")
-    public ResponseBean<TTag> get(String id) {
-        return new ResponseBean<>(tagService.getById(Long.valueOf(id)));
+    public ResponseBean<TTagVO> get(String id) {
+        return new ResponseBean<>(new TTagVO(tagService.getById(Long.valueOf(id))));
     }
 
     @RequestMapping("save")
-    public ResponseBean<String> save(@RequestBody TTag tTag) {
+    public ResponseBean<String> save(@RequestBody TTagVO tTag) {
+        TTag t = new TTag();
+        t.setIsTd(Integer.valueOf(tTag.getIsTdStr()));
+        t.setTagType(Integer.valueOf(tTag.getTagTypeStr()));
+        t.setName(tTag.getName());
+        t.setTdKey(tTag.getTdKey());
+        t.setId(tTag.getId());
         if (tTag.getId() == null) {
-            tagService.save(tTag);
+            tagService.save(t);
         } else {
-            tagService.updateById(tTag);
+            tagService.updateById(t);
         }
         return new ResponseBean<>("操作成功");
     }
