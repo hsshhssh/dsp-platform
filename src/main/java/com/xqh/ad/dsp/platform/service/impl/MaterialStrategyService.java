@@ -124,7 +124,7 @@ public class MaterialStrategyService {
             // 黑名单
             if (Objects.equals(TagTypeEnum.BLACK.getCode(), tag.getTagType())
                     && tagRecord != null) {
-                log.info("黑名单命中");
+                // log.info("黑名单命中");
                 return false;
             }
 
@@ -168,7 +168,7 @@ public class MaterialStrategyService {
         //
         // }
         // 所有标签都不满足
-        log.info("所有标签都不满足");
+        // log.info("所有标签都不满足");
         return true;
     }
 
