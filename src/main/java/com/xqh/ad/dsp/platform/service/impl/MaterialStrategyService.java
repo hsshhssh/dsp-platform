@@ -106,10 +106,11 @@ public class MaterialStrategyService {
         List<TTag> tagList = tagService.list();
 
         // 仅支持安卓
-        TDDeviceTypeEnum deviceTypeEnum = TDDeviceTypeEnum.getByCode(deviceType);
-        if (null == deviceTypeEnum || !Objects.equals(TDDeviceTypeEnum.IMEI.getCode(), deviceType)) {
-            return false;
-        }
+        TDDeviceTypeEnum deviceTypeEnum = TDDeviceTypeEnum.IMEI;
+        // TDDeviceTypeEnum deviceTypeEnum = TDDeviceTypeEnum.getByCode(deviceType);
+        // if (null == deviceTypeEnum || !Objects.equals(TDDeviceTypeEnum.IMEI.getCode(), deviceType)) {
+        //     return false;
+        // }
 
         // 查询本地匹配记录
         List<TTag> noRecordTagList = Lists.newArrayList();
