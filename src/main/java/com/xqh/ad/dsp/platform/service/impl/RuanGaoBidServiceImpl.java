@@ -191,7 +191,7 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
             }
 
             // 过滤标签
-            boolean tagReslut = materialStrategyService.filerTDTag(strategy, request.getDevice().getDpid(), request.getDevice().getId());
+            boolean tagReslut = materialStrategyService.filerTDTag(strategy,  request.getDevice().getId(), request.getDevice().getDpid());
             if (!tagReslut) {
                 log.info("软告竞价-标签校验不通过 adplacementid:{}", imp.getTagid());
                 continue;
