@@ -121,6 +121,13 @@ public class MaterialStrategyService {
             queryWrapper.eq("tagid", tag.getId());
             TTagDeviceRecord tagRecord = tagDeviceRecordService.getOne(queryWrapper);
 
+            // 白名单
+            if (Objects.equals(TagTypeEnum.WHILE.getCode(), tag.getTagType())
+                    && tagRecord != null) {
+                return true;
+            }
+
+
             // 黑名单
             if (Objects.equals(TagTypeEnum.BLACK.getCode(), tag.getTagType())
                     && tagRecord != null) {
@@ -128,11 +135,6 @@ public class MaterialStrategyService {
                 return false;
             }
 
-            // // 白名单
-            // if (Objects.equals(TagTypeEnum.WHILE.getCode(), tag.getTagType())
-            //         && tagRecord != null) {
-            //     return true;
-            // }
 
             // td 记录
             // if (Objects.equals(TagIsTdEnum.YES.getCode(), tag.getIsTd())) {
