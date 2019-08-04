@@ -103,7 +103,7 @@ public class MaterialStrategyService {
         }
         QueryWrapper<TTag> tagQuery = new QueryWrapper<>();
         tagQuery.in("id", tagIdList.stream().map(Long::valueOf).collect(Collectors.toList()));
-        List<TTag> tagList = tagService.list();
+        List<TTag> tagList = tagService.list(tagQuery);
         List<TTag> whileTagList = Lists.newArrayList();
         List<TTag> blackTagList = Lists.newArrayList();
         for (TTag tag : tagList) {
@@ -135,7 +135,7 @@ public class MaterialStrategyService {
             return onlyBlack(blackTagList, deviceId, deviceTypeEnum);
         } else if (!CollectionUtils.isEmpty(whileTagList) && CollectionUtils.isEmpty(blackTagList)) {
             // 只有白名单
-            return onlyBlack(whileTagList, deviceId, deviceTypeEnum);
+            return onlyWhile(whileTagList, deviceId, deviceTypeEnum);
         } else {
             // 黑名单&&白名单
             return blackAndWhile(whileTagList, blackTagList, deviceId, deviceTypeEnum);
