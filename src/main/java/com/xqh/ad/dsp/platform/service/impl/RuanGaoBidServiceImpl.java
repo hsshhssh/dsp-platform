@@ -120,6 +120,9 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
 
         // seatbid
         List<Map<String, List<BidResponse.Bid>>> seatbid = getSeatbid(request, requestRecordModelList);
+        if (CollectionUtils.isEmpty(seatbid)) {
+            response.setNbr(9);
+        }
         response.setSeatbid(seatbid);
 
         bidResponseModel.setBidResponse(response);
@@ -202,7 +205,7 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
             TPlatformMaterial material = materialService.getById(strategy.getMaterialid());
 
             // 构造响应bid对象
-            bidList.add(getBid(request, imp, material));
+            bidList.add(getBid(request, imp, material, strategy));
 
             // 构造请求请求记录参数
             requestRecordModel.setImpid(imp.getId());
@@ -214,7 +217,7 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
         return seatbid;
     }
 
-    private BidResponse.Bid getBid(BidRequest request, BidRequest.Imp imp,  TPlatformMaterial material) {
+    private BidResponse.Bid getBid(BidRequest request, BidRequest.Imp imp,  TPlatformMaterial material, TAdplacementMaterial strategy) {
         BidResponse.Bid bid = new BidResponse.Bid();
         // 请求ID
         bid.setId(request.getId());
@@ -227,9 +230,29 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
         bid.setAdm(material.getAdm());
         bid.setCrid(material.getCrid());
         bid.setAdtype(material.getAdtype());
-        bid.setExt(CommonUtils.strToObj(material.getExt()));
+
+        bid.setExt(getExt(strategy));
 
         return bid;
+    }
+
+    private Object getExt(TAdplacementMaterial strategy) {
+        JSONObject ext = new JSONObject();
+
+        JSONArray pmoArr = new JSONArray();
+        JSONObject pmo = new JSONObject();
+        pmo.put("type_mma", 0);
+        pmo.put("url", strategy.getPmoUrl());
+        pmoArr.add(pmo);
+        ext.put("pmo", pmoArr);
+
+        JSONArray cmoArr = new JSONArray();
+        JSONObject cmo = new JSONObject();
+        cmo.put("type_mma", 0);
+        cmo.put("url", strategy.getCmoUrl());
+        cmoArr.add(cmo);
+        ext.put("cmo", cmoArr);
+        return ext;
     }
 
 
