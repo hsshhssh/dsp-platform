@@ -104,6 +104,20 @@ public class MaterialStrategyService {
         QueryWrapper<TTag> tagQuery = new QueryWrapper<>();
         tagQuery.in("id", tagIdList.stream().map(Long::valueOf).collect(Collectors.toList()));
         List<TTag> tagList = tagService.list();
+        List<TTag> whileTagList = Lists.newArrayList();
+        List<TTag> blackTagList = Lists.newArrayList();
+        for (TTag tag : tagList) {
+            // 白名单
+            if (Objects.equals(TagTypeEnum.WHILE.getCode(), tag.getTagType())) {
+                whileTagList.add(tag);
+            }
+
+
+            // 黑名单
+            if (Objects.equals(TagTypeEnum.BLACK.getCode(), tag.getTagType())) {
+                blackTagList.add(tag);
+            }
+        }
 
         // 仅支持安卓
         TDDeviceTypeEnum deviceTypeEnum = TDDeviceTypeEnum.IMEI;
@@ -112,66 +126,62 @@ public class MaterialStrategyService {
         //     return false;
         // }
 
-        // 查询本地匹配记录
-        List<TTag> noRecordTagList = Lists.newArrayList();
-        for (TTag tag : tagList) {
+        if (CollectionUtils.isEmpty(whileTagList) && CollectionUtils.isEmpty(blackTagList)) {
+            // 没有黑白名单
+            return false;
+        }
+        else if (CollectionUtils.isEmpty(whileTagList) && !CollectionUtils.isEmpty(blackTagList)) {
+            // 只有黑名单
+            return onlyBlack(blackTagList, deviceId, deviceTypeEnum);
+        } else if (!CollectionUtils.isEmpty(whileTagList) && CollectionUtils.isEmpty(blackTagList)) {
+            // 只有白名单
+            return onlyBlack(whileTagList, deviceId, deviceTypeEnum);
+        } else {
+            // 黑名单&&白名单
+            return blackAndWhile(whileTagList, blackTagList, deviceId, deviceTypeEnum);
+        }
+
+    }
+
+    private boolean onlyBlack(List<TTag> blackTagList, String deviceId, TDDeviceTypeEnum deviceTypeEnum) {
+        for (TTag tag : blackTagList) {
             QueryWrapper<TTagDeviceRecord> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("deviceId", deviceId);
             queryWrapper.eq("type", deviceTypeEnum.getTdCode());
             queryWrapper.eq("tagid", tag.getId());
             TTagDeviceRecord tagRecord = tagDeviceRecordService.getOne(queryWrapper);
 
-            // 白名单
-            if (Objects.equals(TagTypeEnum.WHILE.getCode(), tag.getTagType())
-                    && tagRecord != null) {
-                return true;
-            }
-
-
-            // 黑名单
-            if (Objects.equals(TagTypeEnum.BLACK.getCode(), tag.getTagType())
-                    && tagRecord != null) {
-                // log.info("黑名单命中");
+            if (tagRecord != null) {
                 return false;
             }
+        }
+        return true;
+    }
 
+    private boolean onlyWhile(List<TTag> whileTagList, String deviceId, TDDeviceTypeEnum deviceTypeEnum) {
+        for (TTag tag : whileTagList) {
+            QueryWrapper<TTagDeviceRecord> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("deviceId", deviceId);
+            queryWrapper.eq("type", deviceTypeEnum.getTdCode());
+            queryWrapper.eq("tagid", tag.getId());
+            TTagDeviceRecord tagRecord = tagDeviceRecordService.getOne(queryWrapper);
 
-            // td 记录
-            // if (Objects.equals(TagIsTdEnum.YES.getCode(), tag.getIsTd())) {
-            //     if (tagRecord != null && Objects.equals(tagRecord.getResult(), TagResultEnum.YES.getCode())) {
-            //         log.info("标签过滤-本地记录匹配 tag:{}", tagRecord.getId());
-            //         return true;
-            //     }
-            //     if (tagRecord == null) {
-            //         noRecordTagList.add(tag);
-            //     }
-            // }
+            if (tagRecord != null) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    private boolean blackAndWhile(List<TTag> whileTagList, List<TTag> blackTagList, String deviceId, TDDeviceTypeEnum deviceTypeEnum) {
+        boolean whileResult = onlyWhile(whileTagList, deviceId, deviceTypeEnum);
+
+        if (whileResult) {
+            return onlyBlack(blackTagList, deviceId, deviceTypeEnum);
+        } else {
+            return false;
         }
 
-        // 请求TD
-        // for (TTag tag : noRecordTagList) {
-        //     boolean tdResult;
-        //     try {
-        //         tdResult = tdService.getTDResult(tag, deviceTypeEnum.getTdCode(), deviceId);
-        //     } catch (Exception e) {
-        //         log.error("标签过滤-请求td异常 tagId:{}", tag.getId(), e);
-        //         return false;
-        //     }
-        //
-        //     // 异步记录请求记录
-        //     asyncUtils.handleTdRecord(tag.getId(), deviceTypeEnum.getTdCode(), deviceId, tdResult);
-        //
-        //     // 存在一个成功即可返回
-        //     if (tdResult) {
-        //         log.info("标签过滤-请求TD成功 tagId:{}", tag.getId());
-        //         return true;
-        //     }
-        //
-        // }
-        // 所有标签都不满足
-        // log.info("所有标签都不满足");
-        return true;
     }
 
 }
