@@ -120,7 +120,7 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
 
         // seatbid
         List<Map<String, List<BidResponse.Bid>>> seatbid = getSeatbid(request, requestRecordModelList);
-        if (CollectionUtils.isEmpty(seatbid)) {
+        if (CollectionUtils.isEmpty(seatbid.get(0).get("bid"))) {
             response.setNbr(9);
         }
         response.setSeatbid(seatbid);
