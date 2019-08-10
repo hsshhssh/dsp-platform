@@ -16,8 +16,8 @@ public class AmUpdateRecordListDTO extends PageDTO {
      */
     private Long timestamp_gte_ignore;
     private Long timestamp_lte_ignore;
-    private String record_time_gte;
-    private String record_time_lte;
+    private LocalDateTime record_time_gte;
+    private LocalDateTime record_time_lte;
 
     private Integer type;
     private String amname_like;

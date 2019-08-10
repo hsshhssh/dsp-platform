@@ -37,10 +37,10 @@ public class AmUpdateRecordController {
     public ResponseBean<PageResult<AmUpdateRecordVO>> list(@RequestBody AmUpdateRecordListDTO listDTO) {
 
         if (listDTO.getTimestamp_gte_ignore() != null) {
-            listDTO.setRecord_time_gte(CommonUtils.localDateTimeToStr(CommonUtils.getDateTimeOfTimestamp(listDTO.getTimestamp_gte_ignore())));
+            listDTO.setRecord_time_gte(CommonUtils.getDateTimeOfTimestamp(listDTO.getTimestamp_gte_ignore()));
         }
         if (listDTO.getTimestamp_lte_ignore() != null) {
-            listDTO.setRecord_time_lte(CommonUtils.localDateTimeToStr(CommonUtils.getDateTimeOfTimestamp(listDTO.getTimestamp_lte_ignore())));
+            listDTO.setRecord_time_lte(CommonUtils.getDateTimeOfTimestamp(listDTO.getTimestamp_lte_ignore()));
         }
 
         Page<TAmUpdateRecord> pageQuery = new Page<>(listDTO.getPage(), listDTO.getLimit());
