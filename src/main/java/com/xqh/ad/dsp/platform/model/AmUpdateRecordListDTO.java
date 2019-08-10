@@ -20,5 +20,5 @@ public class AmUpdateRecordListDTO extends PageDTO {
     private String record_time_lte;
 
     private Integer type;
-    private Integer amname_like;
+    private String amname_like;
 }
