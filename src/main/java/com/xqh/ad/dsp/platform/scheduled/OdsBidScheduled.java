@@ -31,7 +31,7 @@ public class OdsBidScheduled {
     @Resource
     private ITOdsBidDateService odsBidDateService;
 
-    @Scheduled(cron="0 5 0 * * *")
+    // @Scheduled(cron="0 5 0 * * *")
     public void odsBidScheduled() {
 
         LocalDateTime startDate = CommonUtils.getZeroHourTime(-1);
