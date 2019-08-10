@@ -2,6 +2,8 @@ package com.xqh.ad.dsp.platform.mybatisplus.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
@@ -82,6 +84,12 @@ public class TAdplacementMaterial implements Serializable {
     @TableField("materialname")
     private String materialname;
 
+    /**
+     * 价格
+     */
+    @TableField("price")
+    private BigDecimal price;
+
    /**
      * 状态 1=>启动 非1=>暂停
      */
@@ -141,6 +149,12 @@ public class TAdplacementMaterial implements Serializable {
      */
     @TableField("cmoUrl")
     private String cmoUrl;
+
+    /**
+     * 删除标识 0否 1是
+     */
+    @TableField("del")
+    private Integer del;
 
     /**
      * 创建时间

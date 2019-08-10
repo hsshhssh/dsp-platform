@@ -19,6 +19,9 @@ public class CommonUtils {
      * 启动状态
      */
     public static final String ENABLE_STATUS = "1";
+    public static final String DISABLE_STATUS = "2";
+    public static final String ENABLE_NAME = "启用";
+    public static final String DISABLE_NAME = "暂停";
 
     /**
      * 联网方式
@@ -92,8 +95,18 @@ public class CommonUtils {
      * @param localDateTime
      * @return
      */
-    public static String localDateTimeToStr(LocalDateTime localDateTime) {
+    public static String localDateToStr(LocalDateTime localDateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return localDateTime.format(formatter);
+    }
+
+    /**
+     * localDateTime to String
+     * @param localDateTime
+     * @return
+     */
+    public static String localDateTimeToStr(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return localDateTime.format(formatter);
     }
 

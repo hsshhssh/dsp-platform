@@ -2,7 +2,10 @@ package com.xqh.ad.dsp.platform.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.common.base.Splitter;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import com.xqh.ad.dsp.platform.model.BidRequest;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TAdplacementMaterial;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TTag;
@@ -11,6 +14,7 @@ import com.xqh.ad.dsp.platform.mybatisplus.service.ITAdplacementMaterialService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITTagDeviceRecordService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITTagService;
 import com.xqh.ad.dsp.platform.utils.AsyncUtils;
+import com.xqh.ad.dsp.platform.utils.CacheUtils;
 import com.xqh.ad.dsp.platform.utils.CommonUtils;
 import com.xqh.ad.dsp.platform.utils.enums.*;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -37,24 +42,37 @@ public class MaterialStrategyService {
     @Resource
     private ITTagService tagService;
     @Resource
-    private TDService tdService;
-    @Resource
-    private AsyncUtils asyncUtils;
+    private CacheUtils cacheUtils;
 
     /**
      * 获取广告位策略
+     * @return Map<adplacementId, TAdplacementMaterial>
      */
     public Map<String, TAdplacementMaterial> getStrategy(BidRequest request, PMediaEnum pMediaEnum) {
 
+        // 查询db
         List<String> adplacementidList = request.getImp().stream().map(BidRequest.Imp::getTagid).collect(Collectors.toList());
-
         QueryWrapper<TAdplacementMaterial> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("adplacementid", adplacementidList);
         queryWrapper.eq("pmediaid", pMediaEnum.getCode());
         queryWrapper.eq("status", CommonUtils.ENABLE_STATUS);
-
         List<TAdplacementMaterial> list = amService.list(queryWrapper);
-        return list.stream().collect(Collectors.toMap(TAdplacementMaterial::getAdplacementid, t -> t));
+
+        // adplacementid => List<TAdplacementMaterial>
+        ArrayListMultimap<String, TAdplacementMaterial> adplacementMap = ArrayListMultimap.create();
+        for (TAdplacementMaterial material : list) {
+            adplacementMap.put(material.getAdplacementid(), material);
+        }
+
+        // 根据下标轮训
+        Map<String, TAdplacementMaterial> result = Maps.newHashMap();
+        for (String adplacementid : adplacementMap.keySet()) {
+            List<TAdplacementMaterial> l = adplacementMap.get(adplacementid);
+            Integer index = cacheUtils.getIndex(l.get(0).getPadplacementid(), l.size());
+            result.put(adplacementid, l.get(index));
+        }
+
+        return result;
     }
 
     /**

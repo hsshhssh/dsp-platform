@@ -224,7 +224,7 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
         // 曝光id
         bid.setImpid(imp.getId());
         // 价格
-        bid.setPrice(material.getPrice().floatValue());
+        bid.setPrice(strategy.getPrice().floatValue());
         // 竞价成功回调地址
         bid.setNurl(ruanGaoConfig.getNurl().trim());
         bid.setAdm(material.getAdm());

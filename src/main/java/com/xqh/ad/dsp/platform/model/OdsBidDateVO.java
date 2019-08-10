@@ -35,6 +35,6 @@ public class OdsBidDateVO {
     public OdsBidDateVO(TOdsBidDate odsBidDate) {
         BeanUtils.copyProperties(odsBidDate, this);
         this.odsTypeStr = OdsTypeEnum.getName(this.odsType);
-        this.odsDateStr = CommonUtils.localDateTimeToStr(this.odsDate);
+        this.odsDateStr = CommonUtils.localDateToStr(this.odsDate);
     }
 }

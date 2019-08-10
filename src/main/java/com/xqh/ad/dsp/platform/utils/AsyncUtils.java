@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.xqh.ad.dsp.platform.model.BidResponse;
 import com.xqh.ad.dsp.platform.model.BidResponseModel;
+import com.xqh.ad.dsp.platform.mybatisplus.entity.TAmUpdateRecord;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TBidRecord;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformAdplacement;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TTagDeviceRecord;
 import com.xqh.ad.dsp.platform.mybatisplus.service.IBidTxService;
+import com.xqh.ad.dsp.platform.mybatisplus.service.ITAmUpdateRecordService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformAdplacementService;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITTagDeviceRecordService;
+import com.xqh.ad.dsp.platform.utils.enums.AmUpdateTypeEnum;
 import com.xqh.ad.dsp.platform.utils.enums.PMediaEnum;
 import com.xqh.ad.dsp.platform.utils.enums.TagResultEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +35,20 @@ public class AsyncUtils {
     private ITPlatformAdplacementService adplacementService;
     @Resource
     private ITTagDeviceRecordService recordService;
+    @Resource
+    private ITAmUpdateRecordService amUpdateRecordService;
 
+    /**
+     * t_am_update_record 最大记录条数
+     */
+    private static final int UPDATE_RECODE_SIZE = 10;
+
+    /**
+     * 同步广告位
+     * @param requestJson
+     * @param bidResponseModel
+     * @param pMediaEnum
+     */
     @Async
     public void handlePublish(String requestJson, BidResponseModel bidResponseModel, PMediaEnum pMediaEnum) {
 
@@ -79,6 +95,29 @@ public class AsyncUtils {
     }
 
 
+    /**
+     * 记录计划变更记录
+     */
+    @Async
+    public void handleAmUpdateRecord(Long id, String name, AmUpdateTypeEnum typeEnum, String updateAfter, String updateBefore) {
+        TAmUpdateRecord record = new TAmUpdateRecord();
+        record.setAmid(id);
+        record.setAmname(name);
+        record.setType(typeEnum.getCode());
+        record.setUpdateBefore(updateBefore);
+        record.setUpdateAfter(updateAfter);
+
+        amUpdateRecordService.save(record);
+    }
+
+
+    /**
+     * 记录td请求
+     * @param tagId
+     * @param type
+     * @param deviceId
+     * @param result
+     */
     @Async
     public void handleTdRecord(Long tagId, Integer type, String deviceId, boolean result) {
 

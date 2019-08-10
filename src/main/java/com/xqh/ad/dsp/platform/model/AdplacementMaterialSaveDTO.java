@@ -2,6 +2,7 @@ package com.xqh.ad.dsp.platform.model;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -19,10 +20,11 @@ public class AdplacementMaterialSaveDTO {
     private Long materialid;
 
     private List<String> hoursList;
-    private List<String> cityList;
+    private List<List<String>> cityList;
     private List<String> networkList;
     private List<String> tagList;
 
+    private BigDecimal price;
     private String remark;
     private String pmoUrl;
     private String cmoUrl;
