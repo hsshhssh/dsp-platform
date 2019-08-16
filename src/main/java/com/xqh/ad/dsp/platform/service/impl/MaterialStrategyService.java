@@ -56,6 +56,7 @@ public class MaterialStrategyService {
         queryWrapper.in("adplacementid", adplacementidList);
         queryWrapper.eq("pmediaid", pMediaEnum.getCode());
         queryWrapper.eq("status", CommonUtils.ENABLE_STATUS);
+        queryWrapper.eq("del", DelEnum.NO.getCode());
         List<TAdplacementMaterial> list = amService.list(queryWrapper);
 
         // adplacementid => List<TAdplacementMaterial>
