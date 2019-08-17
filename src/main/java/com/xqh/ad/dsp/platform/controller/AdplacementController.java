@@ -6,15 +6,21 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xqh.ad.dsp.platform.model.AdplacementListDTO;
 import com.xqh.ad.dsp.platform.model.AdplacementVO;
+import com.xqh.ad.dsp.platform.model.MediaidVO;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TPlatformAdplacement;
 import com.xqh.ad.dsp.platform.mybatisplus.service.ITPlatformAdplacementService;
+import com.xqh.ad.dsp.platform.service.impl.MediaidService;
 import com.xqh.ad.dsp.platform.utils.common.MybatisPlusHelper;
 import com.xqh.ad.dsp.platform.utils.common.PageResult;
 import com.xqh.ad.dsp.platform.utils.common.ResponseBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -27,6 +33,8 @@ public class AdplacementController {
 
     @Autowired
     private ITPlatformAdplacementService adplacementService;
+    @Autowired
+    private MediaidService mediaidService;
 
     /**
      * 广告位列表
@@ -49,5 +57,29 @@ public class AdplacementController {
         return new ResponseBean<>(pageResult);
     }
 
+    /**
+     * 获取媒体数据
+     * @return
+     */
+    @PostMapping("/media/list")
+    public ResponseBean<PageResult<MediaidVO>> mediaList() {
+        List<MediaidVO> list = mediaidService.getList();
+
+        PageResult<MediaidVO> pageResult = new PageResult<>();
+        pageResult.setTotal(list.size());
+        pageResult.setList(list);
+        return new ResponseBean<>(pageResult);
+
+    }
+
+    /**
+     * 清空媒体数据
+     * @return
+     */
+    @PostMapping("media/list/clear")
+    public ResponseBean<String> mediaListClear() {
+        mediaidService.clearList();
+        return new ResponseBean<>("操作成功");
+    }
 
 }
