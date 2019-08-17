@@ -16,7 +16,7 @@ public class AdpMaterialListDTO extends PageDTO {
 
     private Integer pmediaid;
     private String adplacementid;
-    private String mediaid;
+    private Integer mediaid;
     private Long materialid;
     private Integer del;
     private Integer status;
