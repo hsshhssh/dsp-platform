@@ -43,6 +43,9 @@ public class AdpMaterialVO {
     private Integer del;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
+    private Long budget;
+    private Long cost;
+    private Long total;
 
     private String pmediaStr;
     private String createTimeStr;
@@ -61,6 +64,8 @@ public class AdpMaterialVO {
     private boolean priceEdit = false;
     private boolean statusBoolean;
     private boolean delBoolean;
+
+    private boolean budgetEdit=false;
 
     public AdpMaterialVO() {
     }

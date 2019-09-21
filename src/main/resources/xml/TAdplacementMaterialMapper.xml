@@ -2,4 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xqh.ad.dsp.platform.mybatisplus.mapper.TAdplacementMaterialMapper">
 
+    <update id="saveTotalCost">
+        update t_adplacement_material
+        set
+        total = total + cost,
+        cost = 0
+        where id=#{id}
+    </update>
 </mapper>

@@ -87,6 +87,12 @@ public class AsyncUtils {
             tBidRecord.setPadplacementid(adplacement.getPadplacementid());
             tBidRecord.setMediaid(String.valueOf(adplacement.getMediaid()));
             tBidRecord.setMaterialid(requestRecordModel.getMaterialid());
+            tBidRecord.setImpTagId(requestRecordModel.getImpTagId());
+            tBidRecord.setDeviceDpId(requestRecordModel.getDeviceDpId());
+            tBidRecord.setDeviceCarrier(requestRecordModel.getDeviceCarrier());
+            tBidRecord.setDeviceType(requestRecordModel.getDeviceType());
+            tBidRecord.setAmId(requestRecordModel.getAmId());
+            tBidRecord.setCityId(requestRecordModel.getCityId());
 
             recordList.add(tBidRecord);
         }

@@ -27,4 +27,17 @@ public class TAdplacementMaterialServiceImpl extends ServiceImpl<TAdplacementMat
 
         this.baseMapper.updateById(toEnable);
     }
+
+    @Override
+    public int saveCost(Long id, Long cost) {
+        TAdplacementMaterial save = new TAdplacementMaterial();
+        save.setId(id);
+        save.setCost(cost);
+        return this.baseMapper.updateById(save);
+    }
+
+    @Override
+    public int saveAllCost(Long id) {
+        return this.baseMapper.saveTotalCost(id);
+    }
 }

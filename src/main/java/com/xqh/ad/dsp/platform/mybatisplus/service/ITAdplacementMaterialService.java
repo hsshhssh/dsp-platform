@@ -15,4 +15,7 @@ public interface ITAdplacementMaterialService extends IService<TAdplacementMater
 
     public void toEnableAndToDisable(TAdplacementMaterial toEnable, TAdplacementMaterial toDisable);
 
+    public int saveCost(Long id, Long cost);
+
+    public int saveAllCost(Long id);
 }

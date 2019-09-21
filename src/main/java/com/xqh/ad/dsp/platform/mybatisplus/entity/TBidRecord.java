@@ -93,6 +93,42 @@ public class TBidRecord implements Serializable {
     @TableField("update_time")
     private LocalDateTime updateTime;
 
+    /**
+     * 广告位id  BidRequest.Imp.tagid
+     */
+    @TableField("impTagId")
+    private String impTagId;
+
+    /**
+     * 用户设备号 BidRequest.Device.dpid
+     */
+    @TableField("deviceDpId")
+    private String deviceDpId;
+
+    /**
+     * 运营商 BidRequest.Device.carrier
+     */
+    @TableField("deviceCarrier")
+    private String deviceCarrier;
+
+    /**
+     * 设备类型 BidRequest.Device.devicetype
+     */
+    @TableField("deviceType")
+    private String deviceType;
+
+    /**
+     * 推广id
+     */
+    @TableField("amId")
+    private String amId;
+
+    /**
+     * 区域
+     */
+    @TableField("cityId")
+    private String cityId;
+
 
     public Long getId() {
         return id;

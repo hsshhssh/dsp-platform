@@ -167,4 +167,22 @@ public class TAdplacementMaterial implements Serializable {
      */
     @TableField("update_time")
     private LocalDateTime updateTime;
+
+    /**
+     * 预算（每日）
+     */
+    @TableField("budget")
+    private Long budget;
+
+    /**
+     * 当前消耗
+     */
+    @TableField("cost")
+    private Long cost;
+
+    /**
+     * 累计消耗
+     */
+    @TableField("total")
+    private Long total;
 }

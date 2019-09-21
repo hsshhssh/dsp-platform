@@ -14,6 +14,7 @@ public enum AmUpdateTypeEnum {
 
     PRICE(1, "修改价格"),
     STATUS(2, "状态修改"),
+    BUDGET(3, "修改预算"),
     ;
 
     private int code;

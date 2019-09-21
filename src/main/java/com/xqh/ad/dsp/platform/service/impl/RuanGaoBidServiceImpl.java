@@ -211,6 +211,12 @@ public class RuanGaoBidServiceImpl implements RuanGaoBidService {
             requestRecordModel.setImpid(imp.getId());
             requestRecordModel.setAdplacementid(imp.getTagid());
             requestRecordModel.setMaterialid(String.valueOf(material.getId()));
+            requestRecordModel.setImpTagId(imp.getTagid());
+            requestRecordModel.setDeviceDpId(device.getDpid());
+            requestRecordModel.setDeviceCarrier(device.getCarrier());
+            requestRecordModel.setDeviceType(String.valueOf(device.getDevicetype()));
+            requestRecordModel.setAmId(String.valueOf(strategy.getId()));
+            requestRecordModel.setCityId(cityCode);
             requestRecordModelList.add(requestRecordModel);
         }
 

@@ -68,7 +68,21 @@ public class MaterialStrategyService {
         // 根据下标轮训
         Map<String, TAdplacementMaterial> result = Maps.newHashMap();
         for (String adplacementid : adplacementMap.keySet()) {
-            List<TAdplacementMaterial> l = adplacementMap.get(adplacementid);
+            List<TAdplacementMaterial> tempL = adplacementMap.get(adplacementid);
+
+            // 过滤预算
+            List<TAdplacementMaterial> l = tempL.stream().filter(am -> {
+                if (am.getCost() <= am.getBudget()) {
+                    return true;
+                } else {
+                    log.error("超出预算 计划Id:{}", am.getId());
+                    return false;
+                }
+            }).collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(l)) {
+                continue;
+            }
+
             Integer index = cacheUtils.getIndex(l.get(0).getPadplacementid(), l.size());
             result.put(adplacementid, l.get(index));
         }

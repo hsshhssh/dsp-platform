@@ -3,6 +3,7 @@ package com.xqh.ad.dsp.platform.mybatisplus.mapper;
 import com.xqh.ad.dsp.platform.mybatisplus.entity.TAdplacementMaterial;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -14,5 +15,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface TAdplacementMaterialMapper extends BaseMapper<TAdplacementMaterial> {
+
+    public int saveTotalCost(@Param("id") Long id);
 
 }

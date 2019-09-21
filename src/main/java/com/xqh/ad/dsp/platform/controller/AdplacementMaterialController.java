@@ -167,6 +167,7 @@ public class AdplacementMaterialController {
         strategy.setPmoUrl(saveDTO.getPmoUrl());
         strategy.setCmoUrl(saveDTO.getCmoUrl());
         strategy.setPrice(saveDTO.getPrice());
+        strategy.setBudget(saveDTO.getBudget());
 
         // 更新前记录
         TAdplacementMaterial oldStragy = adplacementMaterialService.getById(saveDTO.getId());
@@ -317,6 +318,27 @@ public class AdplacementMaterialController {
         // 记录变更历史
         if (!Objects.equals(strategy.getPrice(), price)) {
             asyncUtils.handleAmUpdateRecord(Long.valueOf(id), strategy.getName(), AmUpdateTypeEnum.PRICE, price.toString(), strategy.getPrice().toString());
+        }
+
+        return new ResponseBean<>("操作成功");
+    }
+
+    @RequestMapping("save/budget")
+    public ResponseBean<String> saveBudget(String id, Long budget) {
+        TAdplacementMaterial strategy = adplacementMaterialService.getById(Long.valueOf(id));
+
+        if (null == strategy) {
+            return new ResponseBean<>(ResponseEnum.ADPLACEMENT_MATERIAL_NOT_EXIT);
+        }
+
+        TAdplacementMaterial updateStrategy = new TAdplacementMaterial();
+        updateStrategy.setId(strategy.getId());
+        updateStrategy.setBudget(budget);
+        adplacementMaterialService.updateById(updateStrategy);
+
+        // 记录变更历史
+        if (!Objects.equals(strategy.getBudget(), budget)) {
+            asyncUtils.handleAmUpdateRecord(Long.valueOf(id), strategy.getName(), AmUpdateTypeEnum.BUDGET, budget.toString(), strategy.getBudget().toString());
         }
 
         return new ResponseBean<>("操作成功");

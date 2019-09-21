@@ -32,4 +32,6 @@ public class AdplacementMaterialSaveDTO {
     private String sex;
     private String age;
 
+    private Long budget;
+
 }
