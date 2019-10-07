@@ -32,7 +32,7 @@ public class TAdplacementMaterialServiceImpl extends ServiceImpl<TAdplacementMat
     public int saveCost(Long id, Long cost) {
         TAdplacementMaterial save = new TAdplacementMaterial();
         save.setId(id);
-        save.setCost(cost);
+        save.setCost(cost/1000);
         return this.baseMapper.updateById(save);
     }
 
